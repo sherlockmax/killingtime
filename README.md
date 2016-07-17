@@ -38,7 +38,7 @@ Killing Time 殺時間
 **UI Sketch**
 - 會員系統2/4 <br> <img src="https://github.com/sherlockmax/killingtime/blob/master/doc/UI%20sketch/%E6%9C%83%E5%93%A1%E7%B3%BB%E7%B5%B11_2.png">
 - 會員系統4/4 <br> <img src="https://github.com/sherlockmax/killingtime/blob/master/doc/UI%20sketch/%E6%9C%83%E5%93%A1%E7%B3%BB%E7%B5%B12_2.png">
-- 遊戲大廳2/2 <br> <img src="https://github.com/sherlockmax/PersonalProject/blob/master/UI%20sketch/%E9%81%8A%E6%88%B2%E5%A4%A7%E5%BB%B31_2.png">
+- 遊戲大廳2/2 <br> <img src="https://github.com/sherlockmax/killingtime/blob/master/doc/UI%20sketch/%E6%9C%83%E5%93%A1%E7%B3%BB%E7%B5%B12_2.png">
 
 
 **Table**
