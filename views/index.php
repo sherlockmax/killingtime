@@ -28,6 +28,7 @@ $pageName = 'index';
 			});
 			
 			$( "#dialog" ).dialog({
+				modal: true,
 				autoOpen: false,
 				resizable: false,
 				width: 600,
@@ -126,36 +127,40 @@ $pageName = 'index';
 				$('#form_forgetPassword').find('form').attr("action","/player/forgetPassword").submit();
 			});
 			
-			$('#form_registe').find("#account").on("keyup keypress blur change", function(){
-				$.ajax({
-					method: "POST",
-					url: "/player/isAccountExsist",
-					data: { account: $(this).val() }
-				}).done(function( msg ) {
-					if(msg){
-						setErrMsg('registe', '該帳號已被使用。');
-						isPass_account = false;
-					}else{
-						clearErrMsg('registe');
-						isPass_account = true;
-					}
-				});
+			$('#form_registe').find("#account").on("blur change", function(){
+				if($(this).val().length > 2){
+					$.ajax({
+						method: "POST",
+						url: "/player/isAccountExsist",
+						data: { account: $(this).val() }
+					}).done(function( msg ) {
+						if(msg == "true"){
+							setErrMsg('registe', '該帳號已被使用。');
+							isPass_account = false;
+						}else{
+							clearErrMsg('registe');
+							isPass_account = true;
+						}
+					});
+				}
 			});
 			
-			$('#form_registe').find("#nickname").on("keyup keypress blur change",function(){
-				$.ajax({
-					method: "POST",
-					url: "/player/isNicknameExsist",
-					data: { nickname: $(this).val() }
-				}).done(function( msg ) {
-					if(msg){
-						setErrMsg('registe', '該暱稱已被使用。');
-						isPass_nickname = false;
-					}else{
-						clearErrMsg('registe');
-						isPass_nickname = true;
-					}
-				});
+			$('#form_registe').find("#nickname").on("blur change",function(){
+				if($(this).val().length > 2){
+					$.ajax({
+						method: "POST",
+						url: "/player/isNicknameExsist",
+						data: { nickname: $(this).val() }
+					}).done(function( msg ) {
+						if(msg == "true"){
+							setErrMsg('registe', '該暱稱已被使用。');
+							isPass_nickname = false;
+						}else{
+							clearErrMsg('registe');
+							isPass_nickname = true;
+						}
+					});
+				}
 			});
 		});
 	</script>
@@ -206,7 +211,7 @@ $pageName = 'index';
 							<form method="post">
 							<div>
 								<div style="text-align: center;">
-									<img id="imgHead" style="width: 150px; height: 150px;" src="/images/head/<?= $_SESSION['photo'] ?>.jpg" />
+									<img id="imgHead" style="width: 150px; height: 150px;" src="/images/head/<?= $_SESSION['player']['account'] ?>.jpg" />
 									<br />
 									<br />
 									<label><?= $_SESSION['player']['nickname'] ?></label>

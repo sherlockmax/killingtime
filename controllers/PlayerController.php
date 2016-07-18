@@ -12,6 +12,7 @@ class PlayerController extends Controller {
         $player->password = isset( $_POST["password"] ) ? $_POST["password"] : $_SESSION["player"]["password"] ;
         $player->email = isset( $_POST["email"] ) ? $_POST["email"] : $_SESSION["player"]["email"] ;
         $player->nickname = isset( $_POST["nickname"] ) ? $_POST["nickname"] : $_SESSION["player"]["nickname"] ;
+        $player->isOnline = isset( $_SESSION["isLogin"] ) ? "是" : "否";
     }
     
     function setDataToClass($player, $data){
@@ -21,6 +22,7 @@ class PlayerController extends Controller {
         $player->nickname = isset( $data["nickname"] ) ? $data["nickname"] : "" ;
         $player->registtime = isset( $data["registtime"] ) ? $data["registtime"] : "" ;
         $player->updatetime = isset( $data["updatetime"] ) ? $data["updatetime"] : "" ;
+        $player->isOnline = $data["isOnline"]=="是" ? "是" : "否";
     }
     
     function index() {
@@ -31,8 +33,6 @@ class PlayerController extends Controller {
     function login(){
         $player = $this->model("player");
         $this->setDefaultValue($player);
-        $player->registtime = Tools::getCurrentDateTime();
-        $player->updatetime = Tools::getCurrentDateTime();
         $player->password_hash = Tools::getPasswordHash($player->password);
         
         $data = $player->getPlayer();
@@ -45,23 +45,23 @@ class PlayerController extends Controller {
         }else{
             $_SESSION['isLogin'] = true;
             $_SESSION['player'] = $data;
-            
-            if(file_exists("images/head/".$data['account'].".jpg")){
-                $_SESSION['photo'] = $data['account'];
-            }else{
-                $_SESSION['photo'] = "head_".rand(1, 10);
-            }
-            
+            $player->setLoginState($data['account']);
         }
 
         $this->view("index");
     }
     
     function logout(){
-        session_start();
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
+
+        $player = $this->model("player");
+        $player->setLogoutState($_SESSION['player']['account']);
+
         session_destroy();
         
-        header("Location: ../home");
+        header("Location: /home");
     }
     
     function registe(){
@@ -96,6 +96,10 @@ class PlayerController extends Controller {
         
         if($isPass){
             $data = $player->addPlayer();
+            
+            copy('images/head/head_'.rand(1, 10).'.jpg', 'images/head/'.$player->account.'.jpg');
+            $_SESSION['show_form'] = 'show_registe';
+            $_SESSION['err_registe'] = '會員申請成功。';
         }
 
         $this->view("index");
@@ -106,9 +110,9 @@ class PlayerController extends Controller {
         $this->setDefaultValue($player);
         $data = $player->getPlayerByAccount();
         if(!empty($data)){
-            echo true;
+            echo "true";
         }else{
-            echo false;
+            echo "false";
         }
     }
     
@@ -117,9 +121,9 @@ class PlayerController extends Controller {
         $this->setDefaultValue($player);
         $data = $player->getPlayerByNickname();
         if(!empty($data)){
-            echo true;
+            echo "true";
         }else{
-            echo false;
+            echo "false";
         }
     }
     
@@ -171,9 +175,9 @@ class PlayerController extends Controller {
         $_SESSION['show_form'] = 'show_forgetPassword';
         if(!empty($data) && !empty($data['email'])){
             if(Tools::sendResetPasswordMail($data)){
-                $_SESSION['err_forgetPassword'] = '成功將密碼重置信件寄至'.$data['email'];
+                $_SESSION['err_forgetPassword'] = '密碼重置申請信成功寄至'.$data['email'];
             }else{
-                $_SESSION['err_forgetPassword'] = '密碼重置信件寄送失敗。';
+                $_SESSION['err_forgetPassword'] = '密碼重置申請信寄送失敗。';
             }
         }else{
             $_SESSION['err_forgetPassword'] = '查無帳號或未設定信箱。';
@@ -187,20 +191,14 @@ class PlayerController extends Controller {
         if (session_status() == PHP_SESSION_NONE) {
             session_start();
         }
-        
-        // location to save cropped image
     	$url = 'images/head/'. $_SESSION['player']['account'].'.jpg';
-    	
     	if(file_exists($url)){
     	    unlink($url);
     	}
-    	
     	// remove the base64 part
     	$base64 = base64_decode(preg_replace('#^data:image/[^;]+;base64,#', '', $_POST['string']));
-     
     	// create image
     	$source = imagecreatefromstring($base64);
-     
     	// save image
     	imagejpeg($source, $url, 100);
     }

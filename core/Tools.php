@@ -2,7 +2,6 @@
 require_once "core/class.phpmailer.php";
 
 class Tools{
-	
 	static function getRandPassword() {
 	    $alphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
 	    $pass = array(); //remember to declare $pass as an array
@@ -26,61 +25,13 @@ class Tools{
     
     static function sendResetPasswordMail($data){
     	$mailHTML = '
-			<html>
-			<head>
-			    <style>
-			    	body{
-			    		color: white;
-			            background: black;
-			    	}
-			        .box{
-			            width: 300px;
-			            margin: 0 auto;
-			            padding: 0px;
-			            color: white;
-			            background: black;
-			        }
-			       .box div{
-			           margin-top: 5px;
-			           margin-bottom: 10px;
-			        }
-			        
-			        .title{
-			            font-size: 20px;
-			            color: white;
-			            font-weight: bold;
-			        }
-			        
-			        .content{
-			            font-size: 16px;
-			            color: #DCDCDC;
-			        }
-			        
-			        .password{
-			            font-size: 30px;
-			            color: #90EE90;
-			            font-weight: bold;
-			            text-align: center;
-			        }
-
-			        .copyright{
-			            font-size: 14px;
-			            color: #87CEEB;
-			        }
-			        
-			    </style>
-			</head>
-			<body>
-			<div class="box">
-			    <div class="title">'.$data['nickname'].' 您好：</div>
-			    <div class="content">以下是您於'.$data['updatetime'].'申請重置的新密碼，請妥善保管並請儘速登入修改密碼，以確保帳戶安全。</div>
-			    <br />
-			    <div class="password"><strong>'.$data['password'].'</strong></div>
-			    <br />
-			    <div class="copyright">此信件由 Killing Time 系統自動發送，請勿直接回覆。</div>
-			</div>
-			</body>
-			</html>';
+			    <p>'.$data['nickname'].'('.$data['account'].') 您好：</p>
+			    <p>以下是您於'.$data['updatetime'].'申請重置的新密碼，請妥善保管並請儘速登入修改密碼，以確保帳戶安全。</p>
+			    <p style="text-align:center">--------------------------------------</p>
+			    <p style="text-align:center"><strong>'.$data['password'].'</strong></p>
+			    <p style="text-align:center"><a href="https://killingtime-sherlockmax.c9users.io/">前往並修改密碼</a></p>
+			    <p style="text-align:center">--------------------------------------</p>
+			    <p class="copyright">此信件由 Killing Time 系統自動發送，請勿直接回覆。</p>';
     	
     	
     	
@@ -97,17 +48,31 @@ class Tools{
 
 		$mail->From = "killingtime.max@gmail.com"; //設定寄件者信箱
 		$mail->FromName = "KillingTime";           //設定寄件者姓名
-		$mail->Subject = "密碼重置信件 - Killing Time";    //設定郵件標題
+		$mail->Subject = "密碼重置申請 - Killing Time";    //設定郵件標題
 		$mail->Body = $mailHTML;  //設定郵件內容
 		$mail->IsHTML(true);                     //設定郵件內容為HTML
-		$mail->AddAddress("uutony29@gmail.com", "uutony29"); //設定收件者郵件及名稱        
+		$mail->AddAddress($data['email'], $data['account']); //設定收件者郵件及名稱        
 
 		if(!$mail->Send()) {
-			echo "<div style='display:none'>Mailer Error: " . $mail->ErrorInfo . "</div>";
+			//echo "<div style='display:none'>Mailer Error: " . $mail->ErrorInfo . "</div>";
 			return false;
 		}else {
 			return true;
 		}
+    }
+    
+    function checkFriendStatus($data, $loginAccount){
+    	if(empty($data)){
+    		return "no";
+    	}else if($data['status'] == 'F'){
+    		return "friend";
+    	}else{
+    		if($data['invite'] == $loginAccount){
+    			return "invite";
+    		}else{
+    			return "notInvite";
+    		}
+    	}
     }
 }
 

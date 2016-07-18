@@ -1,13 +1,31 @@
 <?PHP
 
 class App{
+    
+    private $whiteAction = array("home",
+                        "player/isAccountExsist", 
+                        "player/isNicknameExsist",
+                        "player/forgetPassword",
+                        "player/login",
+                        "player/registe");
 
     public function __construct() {
+        
         $url = $this->parseUrl();
         
         $url[0] = ucfirst($url[0]);
         
         $controllerName =  "{$url[0]}Controller";
+
+        if(!in_array($_GET["url"], $this->whiteAction)){
+            if (session_status() == PHP_SESSION_NONE) {
+                session_start();
+            }
+    		if(empty( $_SESSION['isLogin'] ) || $_SESSION['isLogin'] != 'true'){
+    		    header("Location: /home");
+    		}
+        }
+        
         if (!file_exists("controllers/$controllerName.php"))
             $controllerName = 'HomeController';
         require_once "controllers/$controllerName.php";

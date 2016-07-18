@@ -1018,12 +1018,6 @@ span[id^=err_]{
 	overflow-x: hidden !important;
 }
 
-.historyListLine{
-	background: none !important;
-	border:0px !important;
-	margin: 0px 0px 10px 0px !important;
-}
-
 .friendListLine{
 	background: none !important;
 	border:0px !important;
@@ -1066,4 +1060,18 @@ span[id^=err_]{
 	text-align: center; 
 	line-height: 250px; 
 	vertical-align: middle;
+}
+
+
+.historyListLine{
+	background: none !important;
+	border:0px !important;
+	margin: 0px 0px 10px 0px !important;
+}
+
+.historyListLine label input{
+	width: 100px !important;
+	font-size: 10px !important;
+	margin-left: 55px !important;
+	margin-top: -5px !important;
 }

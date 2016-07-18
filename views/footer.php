@@ -16,3 +16,13 @@
 		</p>
 	</div>
 </div>
+
+<div id="alertMsg" title="">
+</div>
+
+<?PHP 
+	if(isset($_SESSION['alert_message'])){
+		echo "<script>alertMsg('提示訊息', '".$_SESSION['alert_message']."');</script>";
+		unset($_SESSION['alert_message']);
+	}
+?>

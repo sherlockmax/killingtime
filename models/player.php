@@ -8,6 +8,7 @@ class Player {
     public $email;
     public $nickname;
     public $registtime;
+    public $isOnline;
     public $updatetime;
     
     function __construct(){   }
@@ -98,6 +99,26 @@ class Player {
         $conn->closeConnection();
         
         return $data;
+    }
+    
+    function setLoginState( $account ){
+        $conn = new mysqlDao();
+        $sql = "UPDATE player SET isOnline = '是' WHERE account = ?";
+        $stmt = $conn->getConnection()->prepare($sql);
+        $stmt->bindValue(1, $account, PDO::PARAM_STR);
+
+        $stmt->execute();
+        $conn->closeConnection();
+    }
+    
+    function setLogoutState( $account ){
+        $conn = new mysqlDao();
+        $sql = "UPDATE player SET isOnline = '否' WHERE account = ?";
+        $stmt = $conn->getConnection()->prepare($sql);
+        $stmt->bindValue(1, $account, PDO::PARAM_STR);
+
+        $stmt->execute();
+        $conn->closeConnection();
     }
 }
 

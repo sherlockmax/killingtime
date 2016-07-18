@@ -84,3 +84,19 @@ function validateNickname(str){
      var regex = /^[A-Za-z0-9\u4e00-\u9fa5]{3,12}$/;
      return regex.test(str);
 }
+
+function alertMsg(title, msg){
+     $('div #alertMsg').attr("title", title);
+     $('div #alertMsg').html(msg);
+     $("div #alertMsg").dialog({
+                    modal: true,
+				autoOpen: false,
+				resizable: false,
+				buttons: {
+					"確認": function() {
+						$( this ).dialog( "close" );
+					}
+			     }
+	});
+	$('div #alertMsg').dialog( "open" );
+}

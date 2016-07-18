@@ -32,7 +32,7 @@ $pageName = 'memberEdit';
 			var foo = new CROP();
 			foo.init({
 				container: '.default',
-				image: "/images/head/<?= $_SESSION['photo'] ?>.jpg",
+				image: "/images/head/<?= $_SESSION['player']['account'] ?>.jpg",
 				width: 150,
 				height: 150,
 				mask: true,
