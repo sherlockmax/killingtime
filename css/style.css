@@ -415,6 +415,7 @@ body {
 }
 #body .games {
 	overflow: hidden;
+	height: 405px;
 }
 #body .games div {
 	margin: 0;
@@ -494,25 +495,48 @@ body {
 }
 #body .games .aside {
 	background: url(/images/border.gif) repeat-x top left;
-	float: left;
-	margin: 0 0 0 30px;
 	padding: 3px 0 0;
-	width: 420px;
+	margin-top: -10px !important;
+	margin-left: 20px !important;
+	width: 920px;
+	height: 350px;
 }
 #body .games .aside ul {
- *min-height: 568px;
-	overflow: hidden;
-	padding: 5px 8px 11px;
+	overflow-y: auto;
+	overflow-x: hidden;
+	padding: 0px;
+	height: 350px;
+}
+#body .games .aside ul .messageBox{
+	text-align: center;
+	vertical-align: middle;
+	line-height: 320px;
+	height: 320px;
+	width: 900px;
+	display: none;
 }
 #body .games .aside ul li {
 	float: left;
-	margin: 11px 10px;
-	width: 178px;
+	margin: 5px 7px 10px 7px;
+	height: 90px;
+	width: 205px;
+	overflow: hidden;
+	text-align: center;
+	border: 3px solid #6495ED;
+	border-radius: 10px 10px 0px 0px;
+}
+#body .games .aside ul li .title{
+	color: white !important;
+	text-align: center !important;
+}
+#body .games .aside ul li .playerName{
+	color: #6495ED !important;
+	text-align: center !important;
 }
 #body .games .aside ul li span a {
-	font-size: 12px;
-	height: 38px;
-	line-height: 38px;
+	font-size: 18px;
+	height: 30px;
+	line-height: 30px;
 	text-align: center;
 }
 #body .games .article {
@@ -1062,7 +1086,6 @@ span[id^=err_]{
 	vertical-align: middle;
 }
 
-
 .historyListLine{
 	background: none !important;
 	border:0px !important;
@@ -1074,4 +1097,8 @@ span[id^=err_]{
 	font-size: 10px !important;
 	margin-left: 55px !important;
 	margin-top: -5px !important;
+}
+
+.ui-dialog-titlebar-close {
+    visibility: hidden;
 }

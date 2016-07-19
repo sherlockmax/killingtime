@@ -10,6 +10,9 @@ class App{
                         "player/registe");
 
     public function __construct() {
+		if(!isset($_GET['url'])){
+			header("Location: /home");
+		}
         
         $url = $this->parseUrl();
         

@@ -8,10 +8,10 @@ class PlayerController extends Controller {
         if (session_status() == PHP_SESSION_NONE) {
             session_start();
         }
-        $player->account = isset( $_POST["account"] ) ? $_POST["account"] : $_SESSION["player"]["account"] ;
-        $player->password = isset( $_POST["password"] ) ? $_POST["password"] : $_SESSION["player"]["password"] ;
-        $player->email = isset( $_POST["email"] ) ? $_POST["email"] : $_SESSION["player"]["email"] ;
-        $player->nickname = isset( $_POST["nickname"] ) ? $_POST["nickname"] : $_SESSION["player"]["nickname"] ;
+        $player->account = isset( $_POST["account"] ) ? $_POST["account"] : "" ;
+        $player->password = isset( $_POST["password"] ) ? $_POST["password"] : "" ;
+        $player->email = isset( $_POST["email"] ) ? $_POST["email"] : "" ;
+        $player->nickname = isset( $_POST["nickname"] ) ? $_POST["nickname"] : "" ;
         $player->isOnline = isset( $_SESSION["isLogin"] ) ? "是" : "否";
     }
     

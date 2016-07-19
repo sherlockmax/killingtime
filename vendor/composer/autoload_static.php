@@ -67,7 +67,7 @@ class ComposerStaticInit89b9045917b61fa0bbc0dd7aa349e505
         array (
             'WebSocket' => 
             array (
-                0 => __DIR__ . '/../..' . '/core',
+                0 => __DIR__ . '/../..' . '/controllers',
             ),
         ),
         'G' => 

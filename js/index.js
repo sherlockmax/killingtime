@@ -89,14 +89,15 @@ function alertMsg(title, msg){
      $('div #alertMsg').attr("title", title);
      $('div #alertMsg').html(msg);
      $("div #alertMsg").dialog({
-                    modal: true,
-				autoOpen: false,
-				resizable: false,
-				buttons: {
-					"確認": function() {
-						$( this ).dialog( "close" );
-					}
-			     }
+		modal: true,
+		autoOpen: false,
+		resizable: false,
+		draggable: false,
+		buttons: {
+			"確認": function() {
+				$( this ).dialog( "close" );
+			}
+		}
 	});
 	$('div #alertMsg').dialog( "open" );
 }
