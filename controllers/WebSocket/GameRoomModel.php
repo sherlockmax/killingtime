@@ -2,10 +2,18 @@
 namespace WebSocket;
 
 class GameRoomModel {
-	private $roomID;
-	public $palyer1;
+	public $roomID;
+	public $player1;
 	public $player2;
-	public $gameType;
+	public $gameName;
 	public $gameData;
+	
+	function __construct($roomID, $player1, $player2, $gameName, $gameData){
+		$this->roomID = $roomID;
+		$this->player1 = $player1;
+		$this->player2 = $player2;
+		$this->gameName = $gameName;
+		$this->gameData = $gameData;
+	}
 }
 ?>

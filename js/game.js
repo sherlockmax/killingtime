@@ -1,4 +1,4 @@
-var dataArray = {
+var dataBox = {
 action : '',
 data : ''
 }
@@ -14,25 +14,61 @@ $(document).ready(function(){
 		alertMsg("提示訊息", "遊戲伺服器連接成功！");
 		$('#noConnection').hide();
 
-		dataArray.action = 'setPlayer';
-		dataArray.data = player;		
-		sendData(dataArray);
+		dataBox.action = 'setPlayer';
+		dataBox.data = player;
+		sendData(dataBox);
 	};
 
 	conn.onmessage = function(e) {
-		var data = $.parseJSON( e.data );
-		console.log(data);	
-		
-		if(data.action == 'gameRoomList'){
-			if(data.gameRoomList == "null"){
+		var dataBox = $.parseJSON( e.data );
+		var data = null;
+		console.log("GET------dataBox-");	
+		console.log(dataBox);
+		if(dataBox.data != 'null'){
+			data = $.parseJSON( dataBox.data );
+			console.log("GET------data-");	
+			console.log(data);
+		}
+		console.log("----------------------");	
+
+		if(dataBox.action == 'refreshGameRoom'){
+			if(data == "null" || data.length <= 0){
 				$('#noConnection').hide();
+				$('li[id^=room_]').each(function(){
+					$(this).remove();
+				});
 				$('#noGameRoom').show();
 			}else{
-				
+				$('#noConnection').hide();
+				$('#noGameRoom').hide();
+				$('li[id^=room_]').each(function(){
+					$(this).remove();
+				});
+				$.each(data, function () {
+					if(this.player1 == null || this.player2 == null){
+						var playerName = "";
+						var palyerAccount = "";
+						if(this.player1 != null){
+							palyerAccount = this.player1.account;
+							playerName = this.player1.nickname;
+						}
+						if(this.player2 != null){
+							palyerAccount = this.player2.account;
+							playerName = this.player2.nickname;
+						}
+						
+						var newGameRoom = $('#ex_room_0000').clone();
+						$(newGameRoom).attr('id', 'room_' + this.roomID);
+						$(newGameRoom).find('label[class=title]').text('第 '+ this.roomID +' 室  '+ this.gameName);
+						$(newGameRoom).find('label[class=playerName]').text(playerName);
+						$('#gameList').append(newGameRoom);
+						$('#room_'+ this.roomID).show();
+					}
+				});
 			}
 		}
 		
-		if(data.action == 'createRoom'){
+		if(dataBox.action == 'createRoom'){
 			$("#playRoom").dialog({
 				title: "第 " + data.roomID + " 遊戲室 - " + data.gameName,
 				modal: true,
@@ -42,9 +78,9 @@ $(document).ready(function(){
 				width: 950,
 				buttons: {
 					"離開": function() {
-						dataArray.action = 'leaveRoom';
-						dataArray.data = {'roomID' : data.roomID , 'player' : player };
-						sendData(dataArray);
+						dataBox.action = 'leaveRoom';
+						dataBox.data = {'roomID' : data.roomID , 'player' : player };
+						sendData(dataBox);
 						$( this ).dialog( "close" );
 					}
 				}
@@ -64,6 +100,10 @@ $(document).ready(function(){
 	
 	function sendData(data){
 		conn.send(JSON.stringify(data));
+		dataBox = {
+			action : '',
+			data : ''
+		}
 	}
 	
 	$("#createGameRoomSetting").dialog({
@@ -76,9 +116,9 @@ $(document).ready(function(){
 				$( this ).dialog( "close" );
 			},
 			"建立": function() {
-				dataArray.action = 'createRoom';
-				dataArray.data = {'gameName' : $('#CGR_gameName').val()};
-				sendData(dataArray);
+				dataBox.action = 'createRoom';
+				dataBox.data = {'gameName' : $('#CGR_gameName').val()};
+				sendData(dataBox);
 				$( this ).dialog( "close" );
 			}
 		}

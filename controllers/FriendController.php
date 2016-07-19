@@ -45,8 +45,7 @@ class FriendController extends Controller {
         $friend = $this->model("friend");
         $player->nickname = $_POST['nickname'];
         $data = $player->getPlayerByNickname();
-        
-        var_dump($data);
+
         if(empty($data)){
             $result['player'] = NULL;
         }else{

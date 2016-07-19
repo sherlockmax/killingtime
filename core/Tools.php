@@ -61,7 +61,7 @@ class Tools{
 		}
     }
     
-    function checkFriendStatus($data, $loginAccount){
+    static function checkFriendStatus($data, $loginAccount){
     	if(empty($data)){
     		return "no";
     	}else if($data['status'] == 'F'){

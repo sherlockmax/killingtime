@@ -40,13 +40,19 @@ class PlayerController extends Controller {
         if (session_status() == PHP_SESSION_NONE) {
             session_start();
         }
+		
         if(empty($data)){
             $_SESSION['errMsg'] = '登入失敗，請確認帳號或密碼是否正確。';
-        }else{
-            $_SESSION['isLogin'] = true;
+        }
+		if($data['isOnline'] == "是"){
+			$_SESSION['errMsg'] = '重複登入，請確認是否有其他裝置正在登入。';
+		}
+		
+		if(!isset($_SESSION['errMsg'])){
+			$_SESSION['isLogin'] = true;
             $_SESSION['player'] = $data;
             $player->setLoginState($data['account']);
-        }
+		}
 
         $this->view("index");
     }

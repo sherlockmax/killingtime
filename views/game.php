@@ -51,7 +51,7 @@ $pageName = 'gameLobby';
 					<div class="games">
 						<div class="aside">
 							<h3>遊戲室列表</h3>
-							<ul>
+							<ul id="gameList">
 								<li id="noConnection" class="messageBox">
 									<label class="title">正在連接至遊戲伺服器...</label>
 								</li>
