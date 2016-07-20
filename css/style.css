@@ -532,6 +532,7 @@ body {
 #body .games .aside ul li .playerName{
 	color: #6495ED !important;
 	text-align: center !important;
+	font-size: 28px !important;
 }
 #body .games .aside ul li span a {
 	font-size: 18px;
@@ -1101,4 +1102,75 @@ span[id^=err_]{
 
 .ui-dialog-titlebar-close {
     visibility: hidden;
+}
+
+div #playRoom{
+	overflow: hidden;
+}
+
+div #playRoom #nickname{
+	font-size: 18px;
+	color: #6495ED;
+}
+
+div #playRoom #whosTurn{
+	font-size: 30px;
+	color: yellow;
+	margin-top: 30px;
+}
+
+div #playRoom #msg{
+	font-size: 30px;
+	color: white;
+	margin-top: 30px;
+}
+
+div #playRoom img{
+	height: 180px !important;
+	width: 180px !important;
+	margin: 0px 0px !important;
+	border: 1px dotted white !important;
+}
+
+img[src='Error.src']{
+    display: none;
+}
+
+div #playRoom .gameController{
+	border: 1px solid white;
+	width: 490px;
+	padding: 0px;
+	margin: 0px 0px;
+	float: left;
+	height: 620px;
+}
+
+div #playRoom .gameController ul{
+	list-style: none outside none;
+	float:left;
+    clear:right;
+    padding: 0px;
+	margin: 0px 0px;
+}
+
+div #playRoom .gameController ul li{
+	float:left;
+    clear:left;
+	padding: 5px;
+	margin: 0px 0px;
+	border: 1px dotted gray;
+	width: 151px;
+	hieght: 195px !important;
+	line-height: 195px !important;
+	text-align: center;
+	font-size: 50px;
+}
+
+div #playRoom .player1Box, div #playRoom .player2Box{
+	width: 210px;
+	padding: 0px;
+	margin: 0px 0px;
+	float: left;
+	height: 620px;
+	text-align: center;
 }

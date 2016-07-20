@@ -27,6 +27,15 @@ $(document).ready(function(){
      }
      
      logoLoop();
+	 $('input[type=text], input[type=password], input[type=email]').keypress(function (e) {
+		if (e.which == 13) {
+			/*var ids = $(this).attr('id');
+			var action = ids.split('_')[0] + "/" + ids.split('_')[1];
+			$(this).parent('form').attr("action", action);*/
+			$(this).closest('form').submit();
+			return false;    //<---- Add this line
+		}
+	});
 });
 
 $(window).on("load", function() {
@@ -100,4 +109,21 @@ function alertMsg(title, msg){
 		}
 	});
 	$('div #alertMsg').dialog( "open" );
+}
+
+
+function alertMsgFunction(title, msg, func){
+     $('div #alertMsg').attr("title", title);
+     $('div #alertMsg').html(msg);
+     $("div #alertMsg").dialog({
+		modal: true,
+		resizable: false,
+		draggable: false,
+		buttons: {
+			"確認": function() {
+				func();
+				$( this ).dialog( "close" );
+			}
+		}
+	});
 }

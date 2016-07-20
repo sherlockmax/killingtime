@@ -34,7 +34,7 @@ class GameHandler implements MessageComponentInterface {
 		$this->dataBox['action'] = $dataJson['action'];
 		$this->dataBox['data'] = $dataJson['data'];
 		
-		echo "<--- " . $this->getConnectionID($from)." --->\nGET message\n[action]:".$this->dataBox['action']."\n---------------------------------------\n";
+		echo "<--- " . $this->getConnectionID($from)." ---> GET message\n[action]:".$this->dataBox['action']."\n---------------------------------------\n";
 				
 		if($this->dataBox['action'] == 'setPlayer'){
 			$player = new GamePlayerModel($this->dataBox['data']['account'], $this->dataBox['data']['nickname'], $from, NULL);
@@ -51,8 +51,58 @@ class GameHandler implements MessageComponentInterface {
 			$this->sendDataTo($from->resourceId);
 			
 			$this->refreshGameRoom('all');
+		}else if($this->dataBox['action'] == 'leaveRoom'){
+			$roomID = $this->dataBox['data']['roomID'];
+			$gameRoom = $this->gameRoomList[$roomID];
+			
+			if(!empty($gameRoom->player1) && !empty($gameRoom->player2)){
+				$player1 = $gameRoom->player1;
+				$player2 = $gameRoom->player2;
+				$player1->roomID = NULL;
+				$player2->roomID = NULL;
+				$this->playerList[$this->getConnectionID($from)] = $player1;
+				$this->playerList[$this->getConnectionID($player2->client)] = $player2;
+				
+				$this->dataBox['action'] = 'anotherOneleft';
+				$this->dataBox['data'] = NULL;
+				if($gameRoom->player1->account == $this->dataBox['data']['player']['account']){
+					$this->sendDataTo($player2->client->resourceId);
+				}else{
+					$this->sendDataTo($player1->client->resourceId);
+				}
+			}else{
+				$player;
+				if($gameRoom->player1->account == $this->dataBox['data']['player']['account']){
+					$player = $gameRoom->player1;
+				}else{
+					$player = $gameRoom->player2;
+				}
+				$player->roomID = NULL;
+				$this->playerList[$this->getConnectionID($from)] = $player;
+			}
+			
+			unset($this->gameRoomList[$roomID]);
+			$this->refreshGameRoom('all');
+		}else if($this->dataBox['action'] == 'joinGameRoom'){
+			$gameRoom = $this->gameRoomList[$this->dataBox['data']['roomID']];
+			$player = $this->playerList[$this->getConnectionID($from)];
+			$player->roomID = $this->dataBox['data']['roomID'];
+			$player1 = $this->playerList[$this->getConnectionID($gameRoom->player1->client)];
+			
+			$gameRoom->player2 = $player;
+			
+			$this->gameRoomList[$this->dataBox['data']['roomID']] = $gameRoom;
+			$this->playerList[$this->getConnectionID($from)]= $player;
+			
+			$this->dataBox['action'] = 'joinGameRoom';
+			$this->dataBox['data'] = json_encode($gameRoom);
+			$this->sendDataTo($from->resourceId);
+			
+			$this->dataBox['action'] = 'joinGameRoom';
+			$this->dataBox['data'] = json_encode($gameRoom);
+			$this->sendDataTo($player1 ->client->resourceId);
+			
 		}
-		//$this->controller->$action();
     }
 
     public function onClose(ConnectionInterface $conn) {

@@ -68,7 +68,15 @@ $(document).ready(function(){
 			}
 		}
 		
-		if(dataBox.action == 'createRoom'){
+		if(dataBox.action == 'createRoom' || dataBox.action == 'joinGameRoom'){
+			
+			if(dataBox.action == 'joinGameRoom'){
+				if($("#playRoom").find('.player2Box #nickname').text() == "--等待對手加入--" ){
+					$("#playRoom").find('.player2Box #nickname').text(data.player2.nickname);
+					$("#playRoom").find('.player2Box img').attr("src", "images/head/"+data.player2.account+".jpg");
+				}
+			}
+			
 			$("#playRoom").dialog({
 				title: "第 " + data.roomID + " 遊戲室 - " + data.gameName,
 				modal: true,
@@ -76,6 +84,19 @@ $(document).ready(function(){
 				draggable: false,
 				height: 750,
 				width: 950,
+				open: function() {
+					if(dataBox.action == 'createRoom'){
+						$(this).find('.player1Box #nickname').text(data.player1.nickname);
+						$(this).find('.player1Box img').attr("src", "images/head/"+data.player1.account+".jpg");
+						//$(this).find('.player1Box #msg').show();
+					}else{
+						$(this).find('.player2Box #nickname').text(data.player1.nickname);
+						$(this).find('.player2Box img').attr("src", "images/head/"+data.player1.account+".jpg");
+						$(this).find('.player1Box #nickname').text(data.player2.nickname);
+						$(this).find('.player1Box img').attr("src", "images/head/"+data.player2.account+".jpg");
+						//$(this).find('.player2Box #msg').show();
+					}
+				},
 				buttons: {
 					"離開": function() {
 						dataBox.action = 'leaveRoom';
@@ -84,7 +105,11 @@ $(document).ready(function(){
 						$( this ).dialog( "close" );
 					}
 				}
-			});
+			});			
+		}
+		
+		if(dataBox.action == 'anotherOneleft'){
+			$("#playRoom").dialog('close');
 		}
 	};
 	
@@ -127,5 +152,12 @@ $(document).ready(function(){
 	$('#btn_createGameRoom').click(function(){
 		$("#createGameRoomSetting").dialog("open");
 		$('#CGR_gameName').selectmenu({width: 250});
+	});
+	
+	$('#gameList').delegate('a', 'click', function(){
+		var roomID = $(this).closest("li").attr("id").split("_")[1];
+		dataBox.action = 'joinGameRoom';
+		dataBox.data = {'roomID' : roomID, "player" : player};
+		sendData(dataBox);
 	});
 });

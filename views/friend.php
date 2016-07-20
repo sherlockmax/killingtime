@@ -109,7 +109,7 @@ $pageName = 'friendManage';
 			<div>
 				<div>
 					<div class="toolBar">
-						<form method="post">
+						<form method="post" action="/friend/findPlayer">
 						<button id="friendList" type="button">好友列表</button>
 						<button id="friendInvite" type="button">提出的邀請</button>
 						<button id="whoInviteMe" type="button">收到的邀請</button>

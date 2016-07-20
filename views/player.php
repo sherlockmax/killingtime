@@ -82,20 +82,11 @@ $pageName = 'memberEdit';
 					url: "/player/uploadPhoto",
 					data: foo.crop(150, 150, 'jpg')
 				}).fail(function(){
-					$('#dialog_photo_failed').dialog( "open" );
+					location.reload();
 				})
 				.done(function(data) {
-					$('div[data-imgcrop] input[type="range"]').addClass("div_hide");
-					$('.crop-overlay').addClass("div_hide");
-					//$('#dialog_photo_successed').dialog( "open" );
-					var d = new Date();
-					$("img[class=crop-img]").attr("src", "/images/head/<?PHP echo $_SESSION['player']['account'] ?>.jpg?"+d.getTime());
-					
 					location.reload();
 				});
-				
-				$('div[data-imgcrop] input[type="range"]').addClass("div_hide");
-				$('.crop-overlay').addClass("div_hide");
 			});
 			
 			$('#btn_reset').click(function(){
@@ -132,7 +123,7 @@ $pageName = 'memberEdit';
 				}
 			});
 			
-			$('#form_updateProfile').find("#nickname").on("keyup keypress blur change",function(){
+			$('#form_updateProfile').find("#nickname").on("blur change",function(){
 				if($(this).val() != '<?PHP echo $_SESSION['player']['nickname'] ?>'){
 					$.ajax({
 						method: "POST",
@@ -152,6 +143,15 @@ $pageName = 'memberEdit';
 		});
 		
 	</script>
+	<?PHP
+		if(isset($_SESSION['err_uploadPhoto'])){
+			echo "<script>$(window).on('load', function() {";
+			echo "alertMsg('提示訊息', '".$_SESSION['err_uploadPhoto']."');";
+			echo "});</script>";
+
+			unset($_SESSION['err_uploadPhoto']);
+		}
+	?>
 </head>
 <body>
 	<div id="background">
@@ -182,7 +182,7 @@ $pageName = 'memberEdit';
 						
 						
 						<div id="form_updateProfile">
-							<form method="post">
+							<form method="post" action="player/updateData">
 							<h3>編輯基本資料</h3>
 							<div>
 								<div>
@@ -209,14 +209,6 @@ $pageName = 'memberEdit';
 			</div>
 		</div>
 		<?php include_once("footer.php"); ?>
-	</div>
-	
-	
-	<div id="dialog_photo_successed" title="上傳照片...">
-		<strong>更新照片成功</strong>
-	</div>
-	<div id="dialog_photo_failed" title="上傳照片...">
-		<strong>更新照片失敗</strong>
 	</div>
 </body>
 </html>

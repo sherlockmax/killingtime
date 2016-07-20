@@ -166,7 +166,7 @@ $pageName = 'index';
 	</script>
 	<?PHP
 		if(isset($_SESSION['show_form']) && isset($_SESSION['err_registe'])){
-			echo "<script>$(document).ready(function(){";
+			echo "<script>$(window).on('load', function() {";
 			echo "$('#".$_SESSION['show_form']."').trigger('click');";
 			echo "setErrMsg('registe', '".$_SESSION['err_registe']."');";
 			echo "});</script>";
@@ -175,7 +175,7 @@ $pageName = 'index';
 			unset($_SESSION['err_registe']);
 		}
 		if(isset($_SESSION['show_form']) && isset($_SESSION['err_forgetPassword'])){
-			echo "<script>$(document).ready(function(){";
+			echo "<script>$(window).on('load', function() {";
 			echo "$('#".$_SESSION['show_form']."').trigger('click');";
 			echo "setErrMsg('forgetPassword', '".$_SESSION['err_forgetPassword']."');";
 			echo "});</script>";
@@ -207,16 +207,16 @@ $pageName = 'index';
 						</div>
 						
 						<div id="form_player" <?PHP if(!isset($_SESSION['isLogin'])){ echo 'style="display: none;"'; }?> >
-							<h3>歡迎回來！ <?= $_SESSION['player']['nickname'] ?></h3>
+							<h3>歡迎回來！ <?= isset($_SESSION['player']['nickname']) ? $_SESSION['player']['nickname']:"訪客"; ?></h3>
 							<form method="post">
 							<div>
 								<div style="text-align: center;">
-									<img id="imgHead" style="width: 150px; height: 150px;" src="/images/head/<?= $_SESSION['player']['account'] ?>.jpg" />
+									<img id="imgHead" style="width: 150px; height: 150px;" src="/images/head/<?= isset($_SESSION['player']['account']) ? $_SESSION['player']['account']:"head_01"; ?>.jpg" />
 									<br />
 									<br />
-									<label><?= $_SESSION['player']['nickname'] ?></label>
+									<label><?= isset($_SESSION['player']['nickname']) ? $_SESSION['player']['nickname']:"訪客"; ?></label>
 									<br /> 
-									<label><?= $_SESSION['player']['email'] ?></label>
+									<label><?= isset($_SESSION['player']['email']) ? $_SESSION['player']['email']:"Here is your email"; ?></label>
 								</div>
 								<span><a href="/player">編輯基本資料</a></span>
 								<span><a id="btn_logout" href="javascript:void(0);">登出</a></span>
@@ -226,7 +226,7 @@ $pageName = 'index';
 						</div>
 						
 						<div id="form_login" <?PHP if(isset($_SESSION['isLogin'])){ echo 'style="display: none;"'; }?>>
-							<form method="post">
+							<form method="post" action="/player/login">
 							<h3>會員登入</h3>
 							<div>
 								<div>
@@ -246,7 +246,7 @@ $pageName = 'index';
 						</div>
 												
 						<div id="form_registe" style="display: none;">
-							<form method="post">
+							<form method="post" action="/player/registe">
 							<h3>會員申請</h3>
 							<div>
 								<div>
@@ -272,7 +272,7 @@ $pageName = 'index';
 						</div>
 						
 						<div id="form_forgetPassword" style="display: none;">
-							<form method="post">
+							<form method="post" action="/player/forgetPassword">
 							<h3>忘記密碼</h3>
 							<div>
 								<div>

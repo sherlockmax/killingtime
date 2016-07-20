@@ -61,7 +61,7 @@ $pageName = 'gameLobby';
 								<li id="ex_room_0000" style="display: none">
 									<label class="title">第&nbsp;0001&nbsp;室&nbsp;&nbsp;井字遊戲</label>
 									<label class="playerName">殺很大殺很大</label>
-									<span><a href="#">進入挑戰</a></span>
+									<span><a id="btn_joinGameRoom" href="javascript:void(0);">進入挑戰</a></span>
 								</li>
 							</ul>
 						</div>
@@ -82,9 +82,37 @@ $pageName = 'gameLobby';
 		</select>
 	</div>
 	
-	<div id="playRoom" title="第 0001 遊戲室 - 井字遊戲">
-		<div>井字遊戲</div>
-		
+	<div id="playRoom" title="第 0001 遊戲室 - 井字遊戲" style="display: none">
+		<div class="player1Box">
+			<label>你/妳</label>
+			<img src="images/head/head_0.jpg">
+			<label id="nickname">--等待對手加入--</label>
+			<label id="msg">O</label>
+			<label id="whosTurn">輪到你/妳囉!!</label>
+		</div>
+		<div class="gameController">
+			<ul>
+				<li id="table_1">O</li>
+				<li id="table_4">&nbsp;</li>
+				<li id="table_7">&nbsp;</li>
+			</ul>
+			<ul>
+				<li id="table_2">&nbsp;</li>
+				<li id="table_5">X</li>
+				<li id="table_8">&nbsp;</li>
+			</ul>
+			<ul>
+				<li id="table_3">&nbsp;</li>
+				<li id="table_6">O</li>
+				<li id="table_9">&nbsp;</li>
+			</ul>
+		</div>
+		<div class="player2Box">
+			<label>對手</label>
+			<img src="images/head/head_0.jpg">
+			<label id="nickname">--等待對手加入--</label>
+			<label id="msg">X</label>
+		</div>
 	</div>
 </body>
 </html>

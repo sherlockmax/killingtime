@@ -194,19 +194,25 @@ class PlayerController extends Controller {
     
     
     function uploadPhoto(){
-        if (session_status() == PHP_SESSION_NONE) {
-            session_start();
-        }
-    	$url = 'images/head/'. $_SESSION['player']['account'].'.jpg';
-    	if(file_exists($url)){
-    	    unlink($url);
-    	}
-    	// remove the base64 part
-    	$base64 = base64_decode(preg_replace('#^data:image/[^;]+;base64,#', '', $_POST['string']));
-    	// create image
-    	$source = imagecreatefromstring($base64);
-    	// save image
-    	imagejpeg($source, $url, 100);
+		try{
+			if (session_status() == PHP_SESSION_NONE) {
+				session_start();
+			}
+			$url = 'images/head/'. $_SESSION['player']['account'].'.jpg';
+			if(file_exists($url)){
+				unlink($url);
+			}
+			// remove the base64 part
+			$base64 = base64_decode(preg_replace('#^data:image/[^;]+;base64,#', '', $_POST['string']));
+			// create image
+			$source = imagecreatefromstring($base64);
+			// save image
+			imagejpeg($source, $url, 100);
+			
+			$_SESSION['err_uploadPhoto'] = '照片上傳成功。';
+		}catch( Exception $e ){
+			$_SESSION['err_uploadPhoto'] = '照片上傳失敗。';
+		}
     }
 }
 ?>
