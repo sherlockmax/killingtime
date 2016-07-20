@@ -518,7 +518,7 @@ body {
 #body .games .aside ul li {
 	float: left;
 	margin: 5px 7px 10px 7px;
-	height: 90px;
+	height: 85px;
 	width: 205px;
 	overflow: hidden;
 	text-align: center;
@@ -528,11 +528,12 @@ body {
 #body .games .aside ul li .title{
 	color: white !important;
 	text-align: center !important;
+	font-size: 20px;
 }
 #body .games .aside ul li .playerName{
 	color: #6495ED !important;
 	text-align: center !important;
-	font-size: 28px !important;
+	font-size: 18px !important;
 }
 #body .games .aside ul li span a {
 	font-size: 18px;
@@ -1108,21 +1109,15 @@ div #playRoom{
 	overflow: hidden;
 }
 
-div #playRoom #nickname{
+div #playRoom #you_nickname{
 	font-size: 18px;
 	color: #6495ED;
 }
 
 div #playRoom #whosTurn{
-	font-size: 30px;
+	font-size: 20px;
 	color: yellow;
-	margin-top: 30px;
-}
-
-div #playRoom #msg{
-	font-size: 30px;
-	color: white;
-	margin-top: 30px;
+	margin-top: 20px;
 }
 
 div #playRoom img{
@@ -1138,7 +1133,7 @@ img[src='Error.src']{
 
 div #playRoom .gameController{
 	border: 1px solid white;
-	width: 490px;
+	width: 450px;
 	padding: 0px;
 	margin: 0px 0px;
 	float: left;
@@ -1159,18 +1154,61 @@ div #playRoom .gameController ul li{
 	padding: 5px;
 	margin: 0px 0px;
 	border: 1px dotted gray;
-	width: 151px;
-	hieght: 195px !important;
+	width: 138px;
+	height: 195px !important;
 	line-height: 195px !important;
 	text-align: center;
 	font-size: 50px;
 }
 
-div #playRoom .player1Box, div #playRoom .player2Box{
+div #playRoom .playerBox{
 	width: 210px;
 	padding: 0px;
 	margin: 0px 0px;
 	float: left;
 	height: 620px;
 	text-align: center;
+}
+
+div #playRoom .chatBox{
+	width: 250px;
+	padding: 0px;
+	margin: 0px 0px;
+	float: left;
+	height: 620px;
+	text-align: center;
+}
+
+div #playRoom .chatBox input[type=button]{
+	width: 240px;
+	margin: 5px 7px;
+	text-align: center;
+	border: 2px dotted white;
+}
+
+div #playRoom .chatBox #chatMessage{
+	height: 500px;
+	text-align: left;
+	padding: 0px 0px 0px 5px;
+	margin: 0px 0px 5px 0px;
+	overflow-y: auto;
+	overflow-x: hidden;
+}
+
+textarea {
+    resize: none;
+	width: 240px;
+	margin: 2px 5px 0px 5px;
+	height: 70px;
+	font-size: 15px;
+}
+
+div #playRoom .chatBox .hostName{
+	color: #6495ED;
+}
+div #playRoom .chatBox .message{
+	padding-left: 15px;
+}
+div #playRoom .chatBox .guestName{
+	color: yellow;
 }

@@ -3,7 +3,6 @@ namespace WebSocket;
 
 use Ratchet\MessageComponentInterface;
 use Ratchet\ConnectionInterface;
-use WebSocket\GameServerController;
 use WebSocket\GamePlayerModel;
 use WebSocket\GameRoomModel;
 
@@ -13,12 +12,13 @@ class GameHandler implements MessageComponentInterface {
 	protected $playerList;
 	protected $controller;
 	protected $dataBox = array("action" => "", "data" => "");
+	protected $messageTime;
 
     public function __construct() {
         $this->clients = new \SplObjectStorage;
-		$this->controller = new GameServerController();
 		$this->dataBox['action'] = "";
 		$this->dataBox['data'] = "";
+		$this->messageTime = time();
     }
 
     public function onOpen(ConnectionInterface $conn) {
@@ -64,7 +64,7 @@ class GameHandler implements MessageComponentInterface {
 				$this->playerList[$this->getConnectionID($player2->client)] = $player2;
 				
 				$this->dataBox['action'] = 'anotherOneleft';
-				$this->dataBox['data'] = NULL;
+				$this->dataBox['data'] = null;
 				if($gameRoom->player1->account == $this->dataBox['data']['player']['account']){
 					$this->sendDataTo($player2->client->resourceId);
 				}else{
@@ -100,13 +100,39 @@ class GameHandler implements MessageComponentInterface {
 			
 			$this->dataBox['action'] = 'joinGameRoom';
 			$this->dataBox['data'] = json_encode($gameRoom);
-			$this->sendDataTo($player1 ->client->resourceId);
+			$this->sendDataTo($player1->client->resourceId);
+		}else if($this->dataBox['action'] == 'sendMessage'){
+			$this->dataBox['action'] = 'sendMessage';
+			if((time() - $this->messageTime) > 3 ){
+				$gameRoom = $this->gameRoomList[$this->dataBox['data']['roomID']];
+				if(!empty($gameRoom->player1) && !empty($gameRoom->player2)){
+					$player = $player = $this->playerList[$this->getConnectionID($from)];
+					if($gameRoom->player1->account == $player->account){
+						$msgArray = array("nickname" => $gameRoom->player1->nickname.' ('.date('H:i:s').')' , "msg" => $this->dataBox['data']['msg']);
+						$this->dataBox['data'] = json_encode($msgArray);
+						$this->sendDataTo($gameRoom->player2->client->resourceId);
+					}else{
+						$msgArray = array("nickname" => $gameRoom->player2->nickname.' ('.date('H:i:s').')' , "msg" => $this->dataBox['data']['msg']);
+						$this->dataBox['data'] = json_encode($msgArray);
+						$this->sendDataTo($gameRoom->player1->client->resourceId);
+					}
+				}else{
+					$msgArray = array("nickname" => '尚無對手! ('.date('H:i:s').')' , "msg" => "無法發送訊息。");
+					$this->dataBox['data'] = json_encode($msgArray);
+					$this->sendDataTo($this->getConnectionID($from));
+				}
+			}else{
+				$msgArray = array("nickname" => '警告! ('.date('H:i:s').')' , "msg" => "發送訊息過於頻繁。");
+				$this->dataBox['data'] = json_encode($msgArray);
+				$this->sendDataTo($this->getConnectionID($from));
+			}
 			
+			$this->messageTime = time();
 		}
     }
 
     public function onClose(ConnectionInterface $conn) {
-		echo "<--- " . $conn->resourceId. " --->\nDisconnection\n---------------------------------------\n";
+		echo "<--- " . $this->getConnectionID($conn) . " --->\nDisconnection\n---------------------------------------\n";
 		$this->playerDisconnect($conn);
         $this->clients->detach($conn);
     }
@@ -168,17 +194,19 @@ class GameHandler implements MessageComponentInterface {
 		$player = $this->playerList[$this->getConnectionID($client)];
 		if(!empty($player->roomID)){
 			$gameRoom = $this->gameRoomList[$player->roomID];
-			if(!empty($gameRoom->player1) && !empty($gameRoom->player2)){
-				$this->dataBox['action'] = 'anotherOneLeaveGameRoom';
-				$this->dataBox['data'] = "";
+			if(!empty($gameRoom->player1) && !empty($gameRoom->player2)){				
+				$this->dataBox['action'] = 'anotherOneleft';
+				$this->dataBox['data'] = null;
 				if($gameRoom->player1->account == $player->account){
 					$player2 = $this->playerList[$this->getConnectionID($gameRoom->player2->client)];
 					$player2->roomID = NULL;
-					$this->sendDataTo($gameRoom->player2);
+					$this->playerList[$this->getConnectionID($gameRoom->player2->client)] = $player2;
+					$this->sendDataTo($gameRoom->player2->client->resourceId);
 				}else{
 					$player1 = $this->playerList[$this->getConnectionID($gameRoom->player1->client)];
 					$player1->roomID = NULL;
-					$this->sendDataTo($gameRoom->player1);
+					$this->playerList[$this->getConnectionID($gameRoom->player1->client)] = $player1;
+					$this->sendDataTo($gameRoom->player1->client->resourceId);
 				}
 			}
 		}

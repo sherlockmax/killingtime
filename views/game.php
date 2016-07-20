@@ -83,35 +83,34 @@ $pageName = 'gameLobby';
 	</div>
 	
 	<div id="playRoom" title="第 0001 遊戲室 - 井字遊戲" style="display: none">
-		<div class="player1Box">
-			<label>你/妳</label>
-			<img src="images/head/head_0.jpg">
-			<label id="nickname">--等待對手加入--</label>
-			<label id="msg">O</label>
-			<label id="whosTurn">輪到你/妳囉!!</label>
+		<div class="playerBox">
+			<label id="you_nickname">--等待對手加入--</label>
+			<img id="you_img" src="images/head/head_0.jpg">
+			<div style="height: 200px"></div>
+			<img id="other_img" src="images/head/head_0.jpg">
+			<label id="other_nickname">--等待對手加入--</label>
 		</div>
 		<div class="gameController">
 			<ul>
-				<li id="table_1">O</li>
+				<li id="table_1">&nbsp;</li>
 				<li id="table_4">&nbsp;</li>
 				<li id="table_7">&nbsp;</li>
 			</ul>
 			<ul>
 				<li id="table_2">&nbsp;</li>
-				<li id="table_5">X</li>
+				<li id="table_5">&nbsp;</li>
 				<li id="table_8">&nbsp;</li>
 			</ul>
 			<ul>
 				<li id="table_3">&nbsp;</li>
-				<li id="table_6">O</li>
+				<li id="table_6">&nbsp;</li>
 				<li id="table_9">&nbsp;</li>
 			</ul>
 		</div>
-		<div class="player2Box">
-			<label>對手</label>
-			<img src="images/head/head_0.jpg">
-			<label id="nickname">--等待對手加入--</label>
-			<label id="msg">X</label>
+		<div class="chatBox">
+			<div id="chatMessage"></div>
+			<textarea id="iwantsay"></textarea>
+			<input id="btn_sendMessage" name="room_" type="button" value="送出訊息">
 		</div>
 	</div>
 </body>

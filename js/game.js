@@ -8,6 +8,7 @@ $(document).ready(function(){
 	});
 	
 	$('#noConnection').show();
+	$('#playRoom').dialog({ autoOpen: false});
 	
 	var conn = new WebSocket('ws://localhost:8080');
 	conn.onopen = function(e) {
@@ -68,34 +69,62 @@ $(document).ready(function(){
 			}
 		}
 		
-		if(dataBox.action == 'createRoom' || dataBox.action == 'joinGameRoom'){
-			
-			if(dataBox.action == 'joinGameRoom'){
-				if($("#playRoom").find('.player2Box #nickname').text() == "--等待對手加入--" ){
-					$("#playRoom").find('.player2Box #nickname').text(data.player2.nickname);
-					$("#playRoom").find('.player2Box img').attr("src", "images/head/"+data.player2.account+".jpg");
-				}
+		if(dataBox.action == 'sendMessage'){
+			$('#chatMessage').append("<label class='guestName'>"+data.nickname+"</label><label class='message'>"+data.msg+"</label>");
+			$("#chatMessage").animate({ scrollTop:  $('#chatMessage').prop("scrollHeight") }, 500);
+		}
+		
+		if(dataBox.action == 'joinGameRoom'){
+			if ($('#playRoom').dialog('isOpen') === true) {
+				$('#playRoom').find('#other_nickname').text(data.player2.nickname);
+				$('#playRoom').find('#other_img').attr("src", "images/head/"+data.player2.account+".jpg");
+				$('#btn_sendMessage').button({disabled: false});
+			} else {
+				$("#playRoom").dialog({
+					title: "第 " + data.roomID + " 遊戲室 - " + data.gameName,
+					modal: true,
+					resizable: false,
+					draggable: false,
+					autoOpen: true,
+					height: 750,
+					width: 950,
+					open: function() {
+							$(this).find('#you_nickname').text(data.player2.nickname);
+							$(this).find('#you_img').attr("src", "images/head/"+data.player2.account+".jpg");
+							$(this).find('#other_nickname').text(data.player1.nickname);
+							$(this).find('#other_img').attr("src", "images/head/"+data.player1.account+".jpg");
+							
+							$(this).find('#btn_sendMessage').button({disabled: false});
+							$(this).find('#btn_sendMessage').attr("name", "roomID_" +data.roomID);
+					},
+					buttons: {
+						"離開": function() {
+							dataBox.action = 'leaveRoom';
+							dataBox.data = {'roomID' : data.roomID , 'player' : player };
+							sendData(dataBox);
+							$( this ).dialog( "close" );
+							$("#chatMessage").html("");
+						}
+					}
+				});
 			}
-			
+		}
+		
+		if(dataBox.action == 'createRoom'){			
 			$("#playRoom").dialog({
 				title: "第 " + data.roomID + " 遊戲室 - " + data.gameName,
 				modal: true,
 				resizable: false,
 				draggable: false,
+				autoOpen: true,
 				height: 750,
 				width: 950,
 				open: function() {
-					if(dataBox.action == 'createRoom'){
-						$(this).find('.player1Box #nickname').text(data.player1.nickname);
-						$(this).find('.player1Box img').attr("src", "images/head/"+data.player1.account+".jpg");
-						//$(this).find('.player1Box #msg').show();
-					}else{
-						$(this).find('.player2Box #nickname').text(data.player1.nickname);
-						$(this).find('.player2Box img').attr("src", "images/head/"+data.player1.account+".jpg");
-						$(this).find('.player1Box #nickname').text(data.player2.nickname);
-						$(this).find('.player1Box img').attr("src", "images/head/"+data.player2.account+".jpg");
-						//$(this).find('.player2Box #msg').show();
-					}
+						$(this).find('#you_nickname').text(data.player1.nickname);
+						$(this).find('#you_img').attr("src", "images/head/"+data.player1.account+".jpg");
+						
+						$(this).find('#btn_sendMessage').button({disabled: true});
+						$(this).find('#btn_sendMessage').attr("name", "roomID_" +data.roomID);
 				},
 				buttons: {
 					"離開": function() {
@@ -103,13 +132,16 @@ $(document).ready(function(){
 						dataBox.data = {'roomID' : data.roomID , 'player' : player };
 						sendData(dataBox);
 						$( this ).dialog( "close" );
+						$("#chatMessage").html("");
 					}
 				}
-			});			
+			});
 		}
 		
 		if(dataBox.action == 'anotherOneleft'){
+			alert("對手已離開遊戲室");
 			$("#playRoom").dialog('close');
+			$("#chatMessage").html("");
 		}
 	};
 	
@@ -159,5 +191,38 @@ $(document).ready(function(){
 		dataBox.action = 'joinGameRoom';
 		dataBox.data = {'roomID' : roomID, "player" : player};
 		sendData(dataBox);
+	});
+	
+	
+	$("#btn_sendMessage").click(function() {
+		if($('#iwantsay').val().length > 0){
+			var now = new Date(Date.now());
+			var formatted = now.getHours() + ":" + now.getMinutes() + ":" + now.getSeconds();
+			
+			var msg = escapeHtml($('#iwantsay').val());
+			var roomID = $(this).attr('name').split("_")[1];
+			$('#iwantsay').val("");
+			$('#chatMessage').append("<label class='hostName'>"+player.nickname + " (" +formatted+")</label><label class='message'>"+msg+"</label>");
+			dataBox.action = 'sendMessage';
+			dataBox.data = {'roomID' : roomID, "player" : player, "msg": msg};
+			sendData(dataBox);
+			
+			$("#chatMessage").animate({ scrollTop:  $('#chatMessage').prop("scrollHeight") }, 500);
+		}
+		$('textarea').focus();
+	});
+	
+	$('textarea').keypress(function (e) {
+		if (e.which == 13) {
+			if(!$("#btn_sendMessage").is(":disabled")){
+				$('#btn_sendMessage').trigger('click');
+				$('textarea').focus();
+			}else{
+				$('textarea').val("");
+				$('textarea').focus();
+			}
+			
+			return false;
+		}
 	});
 });

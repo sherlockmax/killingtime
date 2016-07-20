@@ -1,33 +1,33 @@
 $(document).ready(function(){
 
-     $('#header a.logo img').mouseover(function(){
-        $(this).attr("src", "/images/logo2-hover.png");  
-     });
-     
-     $('#header a.logo img').mouseout(function(){
-        $(this).attr("src", "/images/logo2.png");  
-     });
-     
-     function mover(){
-          $('#header a.logo img').trigger("mouseover");
-     }
-     
-     function mout(){
-          $('#header a.logo img').trigger("mouseout");
-     }
-     function logoLoop(){
-          if( $('#header a.logo img').attr("src") != "/images/logo2-hover.png" ){
-               setTimeout(mover, 500);
-               setTimeout(mout, 700);
-               setTimeout(mover, 900);
-               setTimeout(mout, 1000);
-          }
-          var waitSec = ((Math.floor((Math.random() * 10) + 1)) * 1000) - 400;
-          setTimeout(logoLoop, (waitSec));
-     }
-     
-     logoLoop();
-	 $('input[type=text], input[type=password], input[type=email]').keypress(function (e) {
+	$('#header a.logo img').mouseover(function(){
+		$(this).attr("src", "/images/logo2-hover.png");  
+	});
+
+	$('#header a.logo img').mouseout(function(){
+		$(this).attr("src", "/images/logo2.png");  
+	});
+
+	function mover(){
+		$('#header a.logo img').trigger("mouseover");
+	}
+
+	function mout(){
+		$('#header a.logo img').trigger("mouseout");
+	}
+	function logoLoop(){
+		if( $('#header a.logo img').attr("src") != "/images/logo2-hover.png" ){
+			setTimeout(mover, 500);
+			setTimeout(mout, 700);
+			setTimeout(mover, 900);
+			setTimeout(mout, 1000);
+		}
+		var waitSec = ((Math.floor((Math.random() * 10) + 1)) * 1000) - 400;
+		setTimeout(logoLoop, (waitSec));
+	}
+
+	logoLoop();
+	$('input[type=text], input[type=password], input[type=email]').keypress(function (e) {
 		if (e.which == 13) {
 			/*var ids = $(this).attr('id');
 			var action = ids.split('_')[0] + "/" + ids.split('_')[1];
@@ -41,6 +41,22 @@ $(document).ready(function(){
 $(window).on("load", function() {
 	$('div[class=loaderBox]').fadeOut(1000);
 });
+
+var entityMap = {
+	"&": "&amp;",
+	"<": "&lt;",
+	">": "&gt;",
+	'"': '&quot;',
+	"'": '&#39;',
+	"/": '&#x2F;'
+};
+
+function escapeHtml(string) {
+	return String(string).replace(/[&<>"'\/]/g, function (s) {
+		return entityMap[s];
+	});
+}
+
 
 function setErrMsg(elementId, msg){
      clearErrMsg(elementId);
