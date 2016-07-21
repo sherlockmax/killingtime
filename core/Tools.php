@@ -22,6 +22,16 @@ class Tools{
         $date = new DateTime();
         return $date->format('Y-m-d H:i:s');
     }
+	
+	static function getDate(){
+		$date = new DateTime();
+        return $date->format('Y-m-d');
+	}
+	
+	static function getTime(){
+		$date = new DateTime();
+        return $date->format('H:i:s');
+	}
     
     static function sendResetPasswordMail($data){
     	$mailHTML = '

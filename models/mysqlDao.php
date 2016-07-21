@@ -1,6 +1,5 @@
 <?PHP
 
-
 class mysqlDao{
      
      private $host = 'localhost';

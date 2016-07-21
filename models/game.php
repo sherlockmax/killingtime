@@ -1,7 +1,7 @@
 <?PHP
 require_once "mysqlDao.php";
 
-class gameRecord{
+class game{
      public $id;
      public $player1;
      public $player2;
@@ -29,6 +29,27 @@ class gameRecord{
 
           return $data;
      }
+	 	 
+	 function saveGameRecord($player1, $player2, $gameName, $winner, $gameData, $memo, $updatetime){	
+		$conn = new mysqlDao();
+        $sql = "INSERT INTO gamerecord (player1, player2, gamename, winner, gamedata, updatetime, memo) VALUES (?, ?, ?, ?, ?, ?, ?)";		
+		
+		$stmt = $conn->getConnection()->prepare($sql);		
+        
+		$stmt->bindValue(1, $player1, PDO::PARAM_STR);
+        $stmt->bindValue(2, $player2, PDO::PARAM_STR);
+        $stmt->bindValue(3, $gameName, PDO::PARAM_STR);
+        $stmt->bindValue(4, $winner, PDO::PARAM_STR);
+        $stmt->bindValue(5, $gameData, PDO::PARAM_STR);
+        $stmt->bindValue(6, $updatetime);
+		$stmt->bindValue(7, $memo, PDO::PARAM_STR);
+        
+		$data = $stmt->execute();
+		
+        $conn->closeConnection();
+		
+		return $data;
+	}
 }
 
 ?>

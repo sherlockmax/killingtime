@@ -1161,6 +1161,11 @@ div #playRoom .gameController ul li{
 	font-size: 50px;
 }
 
+div #playRoom .gameController ul li:hover{
+	border: 1px solid white;
+	cursor: pointer;
+}
+
 div #playRoom .playerBox{
 	width: 210px;
 	padding: 0px;
@@ -1211,4 +1216,22 @@ div #playRoom .chatBox .message{
 }
 div #playRoom .chatBox .guestName{
 	color: yellow;
+}
+
+#whosturn{
+	font-size: 30px;
+	color: red;
+	height: 200px;
+	line-height: 200px;
+	vertical-align: middle;
+}
+
+div #playRoom #gameover{
+	position: absolute !important;
+	width: 453px !important;
+	height: 650px !important;
+	top: 10!important;
+	left: 225px !important;
+	z-index: 99  !important;
+	display: none;
 }

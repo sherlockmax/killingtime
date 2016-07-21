@@ -41,7 +41,7 @@ $pageName = 'gameLobby';
 						<select id="gameName" name="gameName">
 							<option disabled selected>依遊戲篩選</option>
 							<option value="TicTacToe">井字遊戲</option>
-							<option value="CowsAndBulls">猜數字</option>
+							<!--<option value="猜數字">猜數字</option>-->
 						</select>
 						<input id="gameId" type="text" placeholder="輸入遊戲室編號">
 						<button id="show_findGameRoom" type="button">搜尋遊戲室</button>
@@ -78,33 +78,34 @@ $pageName = 'gameLobby';
 		<label>選擇遊戲</label>
 		<select name="gameName" id="CGR_gameName">
 			<option value="井字遊戲">井字遊戲</option>
-			<option value="猜數字">猜數字</option>
+			<!--<option value="猜數字">猜數字</option>-->
 		</select>
 	</div>
 	
 	<div id="playRoom" title="第 0001 遊戲室 - 井字遊戲" style="display: none">
+		<img id="gameover" src="images/loser.jpg">
 		<div class="playerBox">
 			<label id="you_nickname">--等待對手加入--</label>
 			<img id="you_img" src="images/head/head_0.jpg">
-			<div style="height: 200px"></div>
+			<div id="whosturn">該你/妳囉</div>
 			<img id="other_img" src="images/head/head_0.jpg">
 			<label id="other_nickname">--等待對手加入--</label>
 		</div>
 		<div class="gameController">
 			<ul>
-				<li id="table_1">&nbsp;</li>
-				<li id="table_4">&nbsp;</li>
-				<li id="table_7">&nbsp;</li>
+				<li id="table_1-1"></li>
+				<li id="table_1-2"></li>
+				<li id="table_1-3"></li>
 			</ul>
 			<ul>
-				<li id="table_2">&nbsp;</li>
-				<li id="table_5">&nbsp;</li>
-				<li id="table_8">&nbsp;</li>
+				<li id="table_2-1"></li>
+				<li id="table_2-2"></li>
+				<li id="table_2-3"></li>
 			</ul>
 			<ul>
-				<li id="table_3">&nbsp;</li>
-				<li id="table_6">&nbsp;</li>
-				<li id="table_9">&nbsp;</li>
+				<li id="table_3-1"></li>
+				<li id="table_3-2"></li>
+				<li id="table_3-3"></li>
 			</ul>
 		</div>
 		<div class="chatBox">
