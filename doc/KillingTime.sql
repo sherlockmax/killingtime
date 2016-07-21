@@ -1,7 +1,5 @@
-DROP DATABASE KillingTime;
-
-CREATE DATABASE IF NOT EXISTS KillingTime DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
-USE KillingTime;
+CREATE DATABASE IF NOT EXISTS killingtime DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+USE killingtime;
 
 CREATE TABLE friend (
   invite varchar(13) NOT NULL COMMENT '邀請人',
@@ -14,11 +12,11 @@ INSERT INTO friend (invite, player, `status`, updatetime) VALUES('sherlockmax', 
 INSERT INTO friend (invite, player, `status`, updatetime) VALUES('sherlockmax', 'WillSmith', 'W', '2016-07-20 01:48:38');
 
 CREATE TABLE gamerecord (
-  id varchar(13) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '序號',
-  player_1 varchar(13) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '玩家1',
-  player_2 varchar(13) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '玩家2',
+  id int(13) NOT NULL COMMENT '序號',
+  player1 varchar(13) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '玩家1',
+  player2 varchar(13) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '玩家2',
   gamename varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '遊戲名稱',
-  winner varchar(1) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '勝利者(1:player_1/ 2:player_2)',
+  winner varchar(13) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '勝利者(1:player_1/ 2:player_2)',
   gamedata text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '遊戲資料',
   updatetime datetime NOT NULL COMMENT '日期時間',
   memo text CHARACTER SET utf8 COLLATE utf8_unicode_ci COMMENT '描述'
@@ -35,7 +33,7 @@ CREATE TABLE player (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='玩家';
 
 INSERT INTO player (`account`, `password`, email, nickname, registtime, isOnline, updatetime) VALUES('Angelina', '121f86fb9013db37331a1ee94cd423b2', 'Angelina@cc.aa', '安節力那求力', '2016-07-20 01:51:36', '否', '2016-07-20 01:51:36');
-INSERT INTO player (`account`, `password`, email, nickname, registtime, isOnline, updatetime) VALUES('sherlockmax', '121f86fb9013db37331a1ee94cd423b2', 'uutony29@gmail.com', '夏洛克', '2016-07-19 22:27:31', '是', '2016-07-19 22:27:31');
+INSERT INTO player (`account`, `password`, email, nickname, registtime, isOnline, updatetime) VALUES('sherlockmax', '121f86fb9013db37331a1ee94cd423b2', 'uutony29@gmail.com', '夏洛克', '2016-07-19 22:27:31', '否', '2016-07-19 22:27:31');
 INSERT INTO player (`account`, `password`, email, nickname, registtime, isOnline, updatetime) VALUES('WillSmith', '121f86fb9013db37331a1ee94cd423b2', 'WillSmith@aa.cc', '威爾使蜜濕', '2016-07-20 01:22:48', '否', '2016-07-20 01:22:48');
 
 
@@ -46,8 +44,12 @@ ALTER TABLE friend
 
 ALTER TABLE gamerecord
   ADD PRIMARY KEY (id),
-  ADD KEY player_1 (player_1),
-  ADD KEY player_2 (player_2);
+  ADD KEY player_1 (player1),
+  ADD KEY player_2 (player2);
 
 ALTER TABLE player
   ADD PRIMARY KEY (account);
+
+
+ALTER TABLE gamerecord
+  MODIFY id int(13) NOT NULL AUTO_INCREMENT COMMENT '序號';
