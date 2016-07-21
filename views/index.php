@@ -10,7 +10,7 @@ $pageName = 'index';
 <head>
 	<?PHP include_once('init.php'); ?>
 	<script>
-		$(document).ready(function(){
+		$(document).ready(function(){						
 			var isPass_account = true;
 			var isPass_nickname = true;
 			

@@ -112,6 +112,8 @@ class GameHandler implements MessageComponentInterface {
 			$this->dataBox['action'] = 'whosturn';
 			$this->dataBox['data'] = json_encode($msgArray);
 			$this->sendDataTo($player1->client->resourceId);
+			
+			$this->refreshGameRoom('all');
 		}else if($this->dataBox['action'] == 'sendMessage'){
 			$this->dataBox['action'] = 'sendMessage';
 			$gameRoom = $this->gameRoomList[$this->dataBox['data']['roomID']];
