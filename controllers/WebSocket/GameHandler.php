@@ -87,33 +87,39 @@ class GameHandler implements MessageComponentInterface {
 			$this->refreshGameRoom('all');
 		}else if($this->dataBox['action'] == 'joinGameRoom'){
 			$gameRoom = $this->gameRoomList[$this->dataBox['data']['roomID']];
-			$player = $this->playerList[$this->getConnectionID($from)];
-			$player->roomID = $this->dataBox['data']['roomID'];
-			$player1 = $this->playerList[$this->getConnectionID($gameRoom->player1->client)];
-			
-			$gameRoom->player2 = $player;
-			
-			$this->gameRoomList[$this->dataBox['data']['roomID']] = $gameRoom;
-			$this->playerList[$this->getConnectionID($from)]= $player;
-			
-			$this->dataBox['action'] = 'joinGameRoom';
-			$this->dataBox['data'] = json_encode($gameRoom);
-			$this->sendDataTo($from->resourceId);
-			
-			$this->dataBox['action'] = 'joinGameRoom';
-			$this->dataBox['data'] = json_encode($gameRoom);
-			$this->sendDataTo($player1->client->resourceId);
-			
-			$msgArray = array("account" => $gameRoom->whosturn);
-			
-			$this->dataBox['action'] = 'whosturn';
-			$this->dataBox['data'] = json_encode($msgArray);
-			$this->sendDataTo($from->resourceId);
-			$this->dataBox['action'] = 'whosturn';
-			$this->dataBox['data'] = json_encode($msgArray);
-			$this->sendDataTo($player1->client->resourceId);
-			
-			$this->refreshGameRoom('all');
+			if( !empty($gameRoom->palyer1) &&  !empty($gameRoom->palyer2)){
+				$this->dataBox['action'] = 'roomIsFull';
+				$this->dataBox['data'] = null;
+				$this->sendDataTo($from->resourceId);
+			}else{
+				$player = $this->playerList[$this->getConnectionID($from)];
+				$player->roomID = $this->dataBox['data']['roomID'];
+				$player1 = $this->playerList[$this->getConnectionID($gameRoom->player1->client)];
+				
+				$gameRoom->player2 = $player;
+				
+				$this->gameRoomList[$this->dataBox['data']['roomID']] = $gameRoom;
+				$this->playerList[$this->getConnectionID($from)]= $player;
+				
+				$this->dataBox['action'] = 'joinGameRoom';
+				$this->dataBox['data'] = json_encode($gameRoom);
+				$this->sendDataTo($from->resourceId);
+				
+				$this->dataBox['action'] = 'joinGameRoom';
+				$this->dataBox['data'] = json_encode($gameRoom);
+				$this->sendDataTo($player1->client->resourceId);
+				
+				$msgArray = array("account" => $gameRoom->whosturn);
+				
+				$this->dataBox['action'] = 'whosturn';
+				$this->dataBox['data'] = json_encode($msgArray);
+				$this->sendDataTo($from->resourceId);
+				$this->dataBox['action'] = 'whosturn';
+				$this->dataBox['data'] = json_encode($msgArray);
+				$this->sendDataTo($player1->client->resourceId);
+				
+				$this->refreshGameRoom('all');
+			}
 		}else if($this->dataBox['action'] == 'sendMessage'){
 			$this->dataBox['action'] = 'sendMessage';
 			$gameRoom = $this->gameRoomList[$this->dataBox['data']['roomID']];
@@ -131,7 +137,7 @@ class GameHandler implements MessageComponentInterface {
 			}else{
 				$msgArray = array("nickname" => '尚無對手! ('.$this->getTime().')' , "msg" => "無法發送訊息。");
 				$this->dataBox['data'] = json_encode($msgArray);
-				$this->sendDataTo($this->getConnectionID($from));
+				$this->sendDataTo($from->resourceId);
 			}
 		}else if($this->dataBox['action'] == 'gameStep'){
 			$player = $this->playerList[$this->getConnectionID($from)];

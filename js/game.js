@@ -3,6 +3,16 @@ action : '',
 data : ''
 }
 $(document).ready(function(){
+	
+	function checkPlayerLoop(){
+		
+		if (typeof player.account != 'undefined' || typeof player.nickname != 'undefined'){
+			alert("無法取得您的訊息，請重新整理或重新登入。");
+			location.reload(true);
+		}
+		setTimeout(logoLoop, 5000);
+	}
+	
 	$(window).bind('beforeunload', function(){
 		return '離開此頁面，將與遊戲大廳中斷連線，並不會儲存目前的遊戲紀錄。';
 	});
@@ -16,7 +26,8 @@ $(document).ready(function(){
 		$('#other_img').attr("src", "images/head/head_0.jpg");
 		$('#you_nickname').text("--等待對手加入--");
 		$('#other_nickname').text("--等待對手加入--");
-		$('#gameover').hide();
+		$('#loser').hide();
+		$('#winner').hide();
 	}
 	
 	$('#noConnection').show();
@@ -82,11 +93,9 @@ $(document).ready(function(){
 		
 		if(dataBox.action == 'winner'){
 			if(data.account == player.account){
-				$("#gameover").attr("src", "images/winner.jpg");
-				$("#gameover").show("slow", "swing");
+				$("#winner").show("slow", "swing");
 			}else{
-				$("#gameover").attr("src", "images/loser.jpg");
-				$("#gameover").show("slow", "swing");
+				$("#loser").show("slow", "swing");
 			}
 		}
 		
@@ -133,7 +142,7 @@ $(document).ready(function(){
 			if(data.whosturn == player.account){
 				$('#whosturn').text("該你/妳囉");
 			}else{
-				$('#whosturn').text("等待對手下手");
+				$('#whosturn').text("等待對手，快用聊天室嗆他/她!");
 			}
 		}
 		
@@ -171,6 +180,10 @@ $(document).ready(function(){
 			}
 			$("#playRoom").dialog('close');
 			resetGameRoom();
+		}
+		
+		if(dataBox.action == 'roomIsFull'){
+			alert("該遊戲室已被占滿");
 		}
 		
 		if(dataBox.action == 'gameStep'){

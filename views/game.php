@@ -73,7 +73,6 @@ $pageName = 'gameLobby';
 		<?php include_once("footer.php"); ?>
 	</div>
 	
-	<input type="hidden" value="" name="G_gameName">
 	<div id="createGameRoomSetting" title="建立遊戲室">
 		<label>選擇遊戲</label>
 		<select name="gameName" id="CGR_gameName">
@@ -83,7 +82,8 @@ $pageName = 'gameLobby';
 	</div>
 	
 	<div id="playRoom" title="第 0001 遊戲室 - 井字遊戲" style="display: none">
-		<img id="gameover" src="images/loser.jpg">
+		<img id="loser" src="images/loser.jpg">
+		<img id="winner" src="images/winner.jpg">
 		<div class="playerBox">
 			<label id="you_nickname">--等待對手加入--</label>
 			<img id="you_img" src="images/head/head_0.jpg">
