@@ -19,7 +19,13 @@ class TicTacToe {
 			2-1 2-2 2-3
 			3-1 3-2 3-3
 		*/
-		$winnerMark = null;
+		$winnerMark = "tie";
+		
+		for($gameData as $mark){
+			if(empty($mark)){
+				$winnerMark = null;
+			}
+		}
 		
 		for($r=1; $r<=3; $r++){
 			$row = null;
