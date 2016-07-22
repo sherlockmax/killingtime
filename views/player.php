@@ -9,8 +9,8 @@ $pageName = 'memberEdit';
 <head>
 	<?PHP include_once('init.php'); ?>
 	
-	<?= $this->script('cropImg'); ?>
-	<?= $this->css('cropImg'); ?>
+	<script src="<?= $config->jsRoot ?>cropImg.js"></script>
+	<link rel="stylesheet" href="<?= $config->cssRoot ?>cropImg.css"/>
 	<style>
 		.crop-overlay{
 			border: 0px !important;
@@ -32,7 +32,7 @@ $pageName = 'memberEdit';
 			var foo = new CROP();
 			foo.init({
 				container: '.default',
-				image: "/images/head/<?= $_SESSION['player']['account'] ?>.jpg",
+				image: "<?= $config->imgRoot ?>head/<?= $_SESSION['player']['account'] ?>.jpg",
 				width: 150,
 				height: 150,
 				mask: true,
@@ -79,7 +79,7 @@ $pageName = 'memberEdit';
 				
 				$.ajax({
 					type: "post",
-					url: "/player/uploadPhoto",
+					url: "<?= $config->root ?>player/uploadPhoto",
 					data: foo.crop(150, 150, 'jpg')
 				}).fail(function(){
 					location.reload();
@@ -119,7 +119,7 @@ $pageName = 'memberEdit';
 				
 				
 				if(isPass && isPass_nickname){
-					$('#form_updateProfile').find('form').attr("action","/player/updateData").submit();
+					$('#form_updateProfile').find('form').attr("action","<?= $config->root ?>player/updateData").submit();
 				}
 			});
 			
@@ -127,7 +127,7 @@ $pageName = 'memberEdit';
 				if($(this).val() != '<?PHP echo $_SESSION['player']['nickname'] ?>'){
 					$.ajax({
 						method: "POST",
-						url: "/player/isNicknameExsist",
+						url: "<?= $config->root ?>player/isNicknameExsist",
 						data: { nickname: $(this).val() }
 					}).done(function( msg ) {
 						if(msg){
@@ -182,7 +182,7 @@ $pageName = 'memberEdit';
 						
 						
 						<div id="form_updateProfile">
-							<form method="post" action="player/updateData">
+							<form method="post" action="<?= $config->root ?>player/updateData">
 							<h3>編輯基本資料</h3>
 							<div>
 								<div>

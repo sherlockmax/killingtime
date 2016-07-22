@@ -1,11 +1,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>KT 殺時間</title>
+<title><?= $config->projectName ?></title>
 
-<?= $this->icon('favicon') ?>
-<?= $this->script('jquery') ?>
-<?= $this->script('jquery-ui') ?>
-<?= $this->script('index') ?>
+<link rel="icon" href="<?= $config->imgRoot ?>favicon.ico" type="image/x-icon" />
+<script src="<?= $config->jsRoot ?>jquery.js"></script>
+<script src="<?= $config->jsRoot ?>jquery-ui.js"></script>
+<script src="<?= $config->jsRoot ?>index.js"></script>
 
-<?= $this->css('style') ?>
-<?= $this->css('jquery-ui') ?>
+<link rel="stylesheet" href="<?= $config->cssRoot ?>style.css"/>
+<link rel="stylesheet" href="<?= $config->cssRoot ?>jquery-ui.css"/>

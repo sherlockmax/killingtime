@@ -2,7 +2,6 @@
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
-
 $pageName = 'index'; 
 ?>
 <!DOCTYPE HTML>
@@ -115,23 +114,23 @@ $pageName = 'index';
 				}
 				
 				if(isPass){
-					thisForm.attr("action","/player/login").submit();
+					thisForm.attr("action","<?= $config->root ?>player/login").submit();
 				}
 			});
 			
 			$('#btn_logout').click(function(){
-				$('#form_player').find('form').attr("action","/player/logout").submit();
+				$('#form_player').find('form').attr("action","<?= $config->root ?>player/logout").submit();
 			});
 			
 			$('#btn_newPasswordApply').click(function(){
-				$('#form_forgetPassword').find('form').attr("action","/player/forgetPassword").submit();
+				$('#form_forgetPassword').find('form').attr("action","<?= $config->root ?>player/forgetPassword").submit();
 			});
 			
 			$('#form_registe').find("#account").on("blur change", function(){
 				if($(this).val().length > 2){
 					$.ajax({
 						method: "POST",
-						url: "/player/isAccountExsist",
+						url: "<?= $config->root ?>player/isAccountExsist",
 						data: { account: $(this).val() }
 					}).done(function( msg ) {
 						if(msg == "true"){
@@ -149,7 +148,7 @@ $pageName = 'index';
 				if($(this).val().length > 2){
 					$.ajax({
 						method: "POST",
-						url: "/player/isNicknameExsist",
+						url: "<?= $config->root ?>player/isNicknameExsist",
 						data: { nickname: $(this).val() }
 					}).done(function( msg ) {
 						if(msg == "true"){
@@ -211,14 +210,14 @@ $pageName = 'index';
 							<form method="post">
 							<div>
 								<div style="text-align: center;">
-									<img id="imgHead" style="width: 150px; height: 150px;" src="/images/head/<?= isset($_SESSION['player']['account']) ? $_SESSION['player']['account']:"head_01"; ?>.jpg" />
+									<img id="imgHead" style="width: 150px; height: 150px;" src="<?= $config->imgRoot ?>head/<?= isset($_SESSION['player']['account']) ? $_SESSION['player']['account']:"head_01"; ?>.jpg" />
 									<br />
 									<br />
 									<label><?= isset($_SESSION['player']['nickname']) ? $_SESSION['player']['nickname']:"訪客"; ?></label>
 									<br /> 
 									<label><?= isset($_SESSION['player']['email']) ? $_SESSION['player']['email']:"Here is your email"; ?></label>
 								</div>
-								<span><a href="/player">編輯基本資料</a></span>
+								<span><a href="<?= $config->root ?>player">編輯基本資料</a></span>
 								<span><a id="btn_logout" href="javascript:void(0);">登出</a></span>
 								<br />
 							</div>
@@ -226,7 +225,7 @@ $pageName = 'index';
 						</div>
 						
 						<div id="form_login" <?PHP if(isset($_SESSION['isLogin'])){ echo 'style="display: none;"'; }?>>
-							<form method="post" action="/player/login">
+							<form method="post" action="<?= $config->root ?>player/login">
 							<h3>會員登入</h3>
 							<div>
 								<div>
@@ -246,7 +245,7 @@ $pageName = 'index';
 						</div>
 												
 						<div id="form_registe" style="display: none;">
-							<form method="post" action="/player/registe">
+							<form method="post" action="<?= $config->root ?>player/registe">
 							<h3>會員申請</h3>
 							<div>
 								<div>
@@ -272,7 +271,7 @@ $pageName = 'index';
 						</div>
 						
 						<div id="form_forgetPassword" style="display: none;">
-							<form method="post" action="/player/forgetPassword">
+							<form method="post" action="<?= $config->root ?>player/forgetPassword">
 							<h3>忘記密碼</h3>
 							<div>
 								<div>

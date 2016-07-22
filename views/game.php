@@ -29,7 +29,7 @@ $pageName = 'gameLobby';
 			});
 		});
 	</script>
-	<?= $this->script('game') ?>
+	<script src="<?= $config->jsRoot ?>game.js"></script>
 </head>
 <body>
 	<div id="background">

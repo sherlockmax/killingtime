@@ -34,7 +34,7 @@ $pageName = 'friendManage';
 		$('#nickname').on("change blur keyup keypress", function(){
 			$.ajax({
 				method: "POST",
-				url: "/friend/queryNicname",
+				url: "<?= $config->root ?>friend/queryNicname",
 				data: { keyname: $(this).val() }
 			}).done(function( nicknames ) {
 				if(nicknames.length > 0){
@@ -53,50 +53,50 @@ $pageName = 'friendManage';
 				alertMsg("提示訊息", "請輸入暱稱!!");
 			}else{
 				var thisForm = $("div .toolBar").find("form");
-				$(thisForm).attr("action", "/friend/findPlayer");
+				$(thisForm).attr("action", "<?= $config->root ?>friend/findPlayer");
 				$(thisForm).submit();
 			}
 		});
 		
 		$('#friendInvite').click(function(){
-			window.location.href = "/friend/friendInvite";
+			window.location.href = "<?= $config->root ?>friend/friendInvite";
 		});
 		
 		$('#whoInviteMe').click(function(){
-			window.location.href = "/friend/whoInviteMe";
+			window.location.href = "<?= $config->root ?>friend/whoInviteMe";
 		});
 		
 		$('#friendList').click(function(){
-			window.location.href = "/friend";
+			window.location.href = "<?= $config->root ?>friend";
 		});
 		
 		$('#btn_addFriend').click(function(){
 			var thisForm = $(this).parent("form");
-			$(thisForm).attr("action", "/friend/addFriend");
+			$(thisForm).attr("action", "<?= $config->root ?>friend/addFriend");
 			$(thisForm).submit();
 		});
 		
 		$('#btn_acceptInvite').click(function(){
 			var thisForm = $(this).parent("form");
-			$(thisForm).attr("action", "/friend/acceptInvite");
+			$(thisForm).attr("action", "<?= $config->root ?>friend/acceptInvite");
 			$(thisForm).submit();
 		});
 		
 		$('#btn_rejectInvite').click(function(){
 			var thisForm = $(this).parent("form");
-			$(thisForm).attr("action", "/friend/rejectInvite");
+			$(thisForm).attr("action", "<?= $config->root ?>friend/rejectInvite");
 			$(thisForm).submit();
 		});
 		
 		$('#btn_removeFriend').click(function(){
 			var thisForm = $(this).parent("form");
-			$(thisForm).attr("action", "/friend/removeFriend");
+			$(thisForm).attr("action", "<?= $config->root ?>friend/removeFriend");
 			$(thisForm).submit();
 		});
 		
 		$("#btn_deleteInvite").click(function(){
 			var thisForm = $(this).parent("form");
-			$(thisForm).attr("action", "/friend/deleteInvite");
+			$(thisForm).attr("action", "<?= $config->root ?>friend/deleteInvite");
 			$(thisForm).submit();
 		});
 	});
@@ -109,7 +109,7 @@ $pageName = 'friendManage';
 			<div>
 				<div>
 					<div class="toolBar">
-						<form method="post" action="/friend/findPlayer">
+						<form method="post" action="<?= $config->root ?>friend/findPlayer">
 						<button id="friendList" type="button">好友列表</button>
 						<button id="friendInvite" type="button">提出的邀請</button>
 						<button id="whoInviteMe" type="button">收到的邀請</button>
@@ -133,7 +133,7 @@ $pageName = 'friendManage';
 												$i = 1;
 												foreach($data['friendList'] as $player) {  ?>
 											<li class="friendListLine">
-												<img src="/images/head/<?= $player['account'] ?>.jpg">
+												<img src="<?= $config->imgRoot ?>head/<?= $player['account'] ?>.jpg">
 												<label>
 													<span style="color: #6495ED	; font-size: 20px; font-weight: bold;"><?= $player['nickname'] ?></span>
 													<br>
@@ -174,7 +174,7 @@ $pageName = 'friendManage';
 											</li>
 											<?PHP } else { ?>
 											<li class="friendListLine">
-												<img src="/images/head/<?= $data['player']['account'] ?>.jpg">
+												<img src="<?= $config->imgRoot ?>head/<?= $data['player']['account'] ?>.jpg">
 												<label>
 													<span style="color: #6495ED	; font-size: 20px; font-weight: bold;"><?= $data['player']['nickname'] ?></span>
 													<br>
@@ -219,7 +219,7 @@ $pageName = 'friendManage';
 												$i = 1;
 												foreach($data['applyList'] as $player) {  ?>
 											<li class="friendListLine">
-												<img src="/images/head/<?= $player['account'] ?>.jpg">
+												<img src="<?= $config->imgRoot ?>head/<?= $player['account'] ?>.jpg">
 												<label>
 													<span style="color: #6495ED	; font-size: 20px; font-weight: bold;"><?= $player['nickname'] ?></span>
 													<br>
@@ -261,7 +261,7 @@ $pageName = 'friendManage';
 												$i = 1;
 												foreach($data['applyList'] as $player) {  ?>
 											<li class="friendListLine">
-												<img src="/images/head/<?= $player['account'] ?>.jpg">
+												<img src="<?= $config->imgRoot ?>head/<?= $player['account'] ?>.jpg">
 												<label>
 													<span style="color: #6495ED	; font-size: 20px; font-weight: bold;"><?= $player['nickname'] ?></span>
 													<br>

@@ -1,15 +1,9 @@
 <?PHP
 
 class App{
-    
-    private $whiteAction = array("home",
-                        "player/isAccountExsist", 
-                        "player/isNicknameExsist",
-                        "player/forgetPassword",
-                        "player/login",
-                        "player/registe");
-
     public function __construct() {
+        $config = new Config();
+        
 		if(!isset($_GET['url'])){
 			header("Location: /home");
 		}
@@ -20,7 +14,7 @@ class App{
         
         $controllerName =  "{$url[0]}Controller";
 
-        if(!in_array($_GET["url"], $this->whiteAction)){
+        if(!in_array($_GET["url"], $config->whiteList)){
             if (session_status() == PHP_SESSION_NONE) {
                 session_start();
             }
