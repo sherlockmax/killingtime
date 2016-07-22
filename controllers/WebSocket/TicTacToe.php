@@ -21,7 +21,7 @@ class TicTacToe {
 		*/
 		$winnerMark = "tie";
 		
-		for($gameData as $mark){
+		foreach($gameData as $mark){
 			if(empty($mark)){
 				$winnerMark = null;
 			}
