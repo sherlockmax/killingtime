@@ -52,6 +52,8 @@ class TicTacToe {
 			return $player1;
 		}else if($winnerMark == "X"){
 			return $player2;
+		}else if($winnerMark == "tie"){
+			return "tie";
 		}else{
 			return null;
 		}

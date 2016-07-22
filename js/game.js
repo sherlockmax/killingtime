@@ -28,6 +28,8 @@ $(document).ready(function(){
 		$('#other_nickname').text("--等待對手加入--");
 		$('#loser').hide();
 		$('#winner').hide();
+		$("#tie").hide();
+		$('#iwantsay').val("");
 	}
 	
 	$('#noConnection').show();
@@ -53,6 +55,10 @@ $(document).ready(function(){
 			console.log(data);
 		}
 		console.log("----------------------");	
+		
+		if(data.action == 'roomIsFull'){
+			alerMsg("警告訊息", "該遊戲室人員已塞滿，無法進入。");
+		}
 
 		if(dataBox.action == 'refreshGameRoom'){
 			if(data == "null" || data.length <= 0){
@@ -92,7 +98,9 @@ $(document).ready(function(){
 		}
 		
 		if(dataBox.action == 'winner'){
-			if(data.account == player.account){
+			if(data.account == 'tie'){
+				$("#tie").show("slow", "swing");
+			}else if(data.account == player.account){
 				$("#winner").show("slow", "swing");
 			}else{
 				$("#loser").show("slow", "swing");
@@ -182,10 +190,6 @@ $(document).ready(function(){
 			resetGameRoom();
 		}
 		
-		if(dataBox.action == 'roomIsFull'){
-			alert("該遊戲室已被占滿");
-		}
-		
 		if(dataBox.action == 'gameStep'){
 			if(data.whosturn != player.account){
 				$('#whosturn').text("該你/妳囉");
@@ -204,7 +208,9 @@ $(document).ready(function(){
 				url: "/game/saveGameRecord",
 				data: data
 			}).done(function(msg){
-				alert(msg);
+				console.log("saveGameRecord");
+				console.log(data);
+				console.log("----------------------");
 			});
 		}
 	};

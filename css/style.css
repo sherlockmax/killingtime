@@ -1226,7 +1226,7 @@ div #playRoom .chatBox .guestName{
 	vertical-align: middle;
 }
 
-div #playRoom #loser, div #playRoom #winner{
+div #playRoom #loser, div #playRoom #winner, div #playRoom #tie{
 	position: absolute !important;
 	width: 453px !important;
 	height: 650px !important;

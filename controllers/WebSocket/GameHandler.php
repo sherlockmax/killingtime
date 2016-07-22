@@ -172,7 +172,6 @@ class GameHandler implements MessageComponentInterface {
 				$this->sendDataTo($this->getConnectionID($gameRoom->player2->client));
 				
 				$winner = TicTacToe::checkWinner($gameRoom->player1->account, $gameRoom->player2->account, $gameRoom->gameData);
-				var_dump($winner);
 				if(!empty( $winner )){
 					$msgArray = Array("account" => $winner );
 					$this->dataBox['action'] = 'winner';

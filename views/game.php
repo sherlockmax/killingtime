@@ -84,6 +84,7 @@ $pageName = 'gameLobby';
 	<div id="playRoom" title="第 0001 遊戲室 - 井字遊戲" style="display: none">
 		<img id="loser" src="images/loser.jpg">
 		<img id="winner" src="images/winner.jpg">
+		<img id="tie" src="images/tie.jpg">
 		<div class="playerBox">
 			<label id="you_nickname">--等待對手加入--</label>
 			<img id="you_img" src="images/head/head_0.jpg">

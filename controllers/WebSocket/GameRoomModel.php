@@ -17,8 +17,6 @@ class GameRoomModel {
 		$this->whosturn = $whosturn;
 		
 		$this->initGameData();
-		
-		var_dump($this->gameData);
 	}
 	
 	function initGameData(){
