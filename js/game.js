@@ -22,8 +22,8 @@ $(document).ready(function(){
 			$(this).text("");
 		});
 		$("#chatMessage").html("");
-		$('#you_img').attr("src", "images/head/head_0.jpg");
-		$('#other_img').attr("src", "images/head/head_0.jpg");
+		$('#you_img').attr("src", imgRoot + "head/head_0.jpg");
+		$('#other_img').attr("src", imgRoot + "head/head_0.jpg");
 		$('#you_nickname').text("--等待對手加入--");
 		$('#other_nickname').text("--等待對手加入--");
 		$('#loser').hide();
@@ -115,7 +115,7 @@ $(document).ready(function(){
 		if(dataBox.action == 'joinGameRoom'){
 			if ($('#playRoom').dialog('isOpen') === true) {
 				$('#playRoom').find('#other_nickname').text(data.player2.nickname);
-				$('#playRoom').find('#other_img').attr("src", "images/head/"+data.player2.account+".jpg");
+				$('#playRoom').find('#other_img').attr("src", imgRoot + "head/"+data.player2.account+".jpg");
 				$('#btn_sendMessage').button({disabled: false});
 			} else {
 				$("#playRoom").dialog({
@@ -128,9 +128,9 @@ $(document).ready(function(){
 					width: 950,
 					open: function() {
 							$(this).find('#you_nickname').text(data.player2.nickname);
-							$(this).find('#you_img').attr("src", "images/head/"+data.player2.account+".jpg");
+							$(this).find('#you_img').attr("src", imgRoot + "head/"+data.player2.account+".jpg");
 							$(this).find('#other_nickname').text(data.player1.nickname);
-							$(this).find('#other_img').attr("src", "images/head/"+data.player1.account+".jpg");
+							$(this).find('#other_img').attr("src", imgRoot + "head/"+data.player1.account+".jpg");
 							
 							$(this).find('#btn_sendMessage').button({disabled: false});
 							$(this).find('#btn_sendMessage').attr("name", "roomID_" +data.roomID);
@@ -165,7 +165,7 @@ $(document).ready(function(){
 				width: 950,
 				open: function() {
 						$(this).find('#you_nickname').text(data.player1.nickname);
-						$(this).find('#you_img').attr("src", "images/head/"+data.player1.account+".jpg");
+						$(this).find('#you_img').attr("src", imgRoot + "head/"+data.player1.account+".jpg");
 						
 						$(this).find('#btn_sendMessage').button({disabled: true});
 						$(this).find('#btn_sendMessage').attr("name", "roomID_" +data.roomID);
@@ -205,7 +205,7 @@ $(document).ready(function(){
 		if(dataBox.action == 'saveGameRecord'){
 			$.ajax({
 				method: "POST",
-				url: "/game/saveGameRecord",
+				url: root + "game/saveGameRecord",
 				data: data
 			}).done(function(msg){
 				console.log("saveGameRecord");

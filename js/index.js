@@ -1,11 +1,10 @@
 $(document).ready(function(){
-
 	$('#header a.logo img').mouseover(function(){
-		$(this).attr("src", "/images/logo2-hover.png");  
+		$(this).attr("src", imgRoot + "logo2-hover.png");  
 	});
 
 	$('#header a.logo img').mouseout(function(){
-		$(this).attr("src", "/images/logo2.png");  
+		$(this).attr("src", imgRoot + "logo2.png");  
 	});
 
 	function mover(){
@@ -16,7 +15,7 @@ $(document).ready(function(){
 		$('#header a.logo img').trigger("mouseout");
 	}
 	function logoLoop(){
-		if( $('#header a.logo img').attr("src") != "/images/logo2-hover.png" ){
+		if( $('#header a.logo img').attr("src") != imgRoot + "logo2-hover.png" ){
 			setTimeout(mover, 500);
 			setTimeout(mout, 700);
 			setTimeout(mover, 900);

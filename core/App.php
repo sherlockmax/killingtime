@@ -5,7 +5,8 @@ class App{
         $config = new Config();
         
 		if(!isset($_GET['url'])){
-			header("Location: /home");
+			header("Location: ".$config->root."home");
+			exit;
 		}
         
         $url = $this->parseUrl();

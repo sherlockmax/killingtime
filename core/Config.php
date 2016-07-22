@@ -13,10 +13,10 @@ class Config {
     
     function __construct(){
          /* 專案名稱 - <title> */
-        $this->projectName = 'KT 殺時間';
+        $this->projectName = 'KillingTime 殺時間';
         
         /* 專案目錄結構設定 */
-        $this->root = '/';
+        $this->root = '/killingtime/';
         $this->imgRoot = $this->root . 'images/';
         $this->cssRoot = $this->root . 'css/';
         $this->jsRoot = $this->root . 'js/';
@@ -26,7 +26,7 @@ class Config {
         $this->db['port']       = '3306';
         $this->db['username']   = 'max';
         $this->db['password']   = '123456';
-        $this->db['dbname']     = 'KillingTime';
+        $this->db['dbname']     = 'killingtime';
         
         
         /* 不需要經過 是否登入狀態 的 action */

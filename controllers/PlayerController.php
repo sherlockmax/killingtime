@@ -67,7 +67,7 @@ class PlayerController extends Controller {
 
         session_destroy();
         
-        header("Location: /home");
+        header("Location: ".$this->root."home");
     }
     
     function registe(){
