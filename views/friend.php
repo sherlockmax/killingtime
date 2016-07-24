@@ -84,8 +84,28 @@
 		
 		$('#btn_removeFriend').click(function(){
 			var thisForm = $(this).parent("form");
+			var friendNickname = $(this).closest('form').find('input[name=nickname]').val();
 			$(thisForm).attr("action", "<?= $config->root ?>friend/removeFriend");
-			$(thisForm).submit();
+			
+			$('div #alertMsg').attr("title", "提示訊息");
+			$('div #alertMsg').html("確定刪除好友 - "+friendNickname+" - 嗎?");
+			$("div #alertMsg").dialog({
+				modal: true,
+				autoOpen: true,
+				resizable: false,
+				draggable: false,
+				buttons: {
+					"確認": function() {
+						$(thisForm).submit();
+						$( this ).dialog( "close" );
+					},
+					"取消": function() {
+						$( this ).dialog( "close" );
+					}
+				}
+			});
+			
+			
 		});
 		
 		$("#btn_deleteInvite").click(function(){
@@ -139,7 +159,8 @@
 												<div>
 													<form method="POST">
 														<input type="hidden" id="account" name="account" value="<?= $player['account'] ?>">
-														<input type="button" value="邀請對戰"  <?PHP if( $player['isOnline'] == "否" ) { echo "disabled"; } ?>>
+														<input type="hidden" id="nickname" name="nickname" value="<?= $player['nickname'] ?>">
+														<!--<input type="button" value="邀請對戰"  <?PHP if( $player['isOnline'] == "否" ) { echo "disabled"; } ?>> -->
 														<input id="btn_removeFriend" type="button" value="刪除好友">
 													</form>
 												</div>
@@ -180,7 +201,9 @@
 												<div>
 													<form method="post">
 													<input type="hidden" id="account" name="account" value="<?= $data['player']['account'] ?>">
-													<?PHP if( $data['player']['friendStatus'] == "friend" ) { ?>
+													<?PHP if( $data['player']['friendStatus'] == "self" ) { ?>
+													<input id="btn_removeFriend" type="button" value="自己" disabled>
+													<?PHP }else if( $data['player']['friendStatus'] == "friend" ) { ?>
 													<input id="btn_removeFriend" type="button" value="刪除好友">
 													<?PHP }else if( $data['player']['friendStatus'] == "no" ) { ?>
 													<input id="btn_addFriend" type="button" value="加入好友">

@@ -31,7 +31,7 @@
 		<div id="body">
 			<div>
 				<div>
-					<div class="toolBar">
+					<div class="toolBar" style="display: none">
 						<select id="gameName" name="gameName">
 							<option disabled selected>依遊戲篩選</option>
 							<option value="TicTacToe">井字遊戲</option>
@@ -49,13 +49,10 @@
 								<li id="noConnection" class="messageBox">
 									<label class="title">正在連接至遊戲伺服器...</label>
 								</li>
-								<li id="noGameRoom" class="messageBox">
-									<label class="title">目前尚無遊戲室</label>
-								</li>
-								<li id="ex_room_0000" style="display: none">
-									<label class="title">第&nbsp;0001&nbsp;室&nbsp;&nbsp;井字遊戲</label>
-									<label class="playerName">殺很大殺很大</label>
-									<span><a id="btn_joinGameRoom" href="javascript:void(0);">進入挑戰</a></span>
+								<li id="ex_room_0000">
+									<label class="title">目前身份</label>
+									<label class="playerName"><?= $player["nickname"] ?></label>
+									<span><a id="btn_createGameRoom" href="javascript:void(0);">建立遊戲室</a></span>
 								</li>
 							</ul>
 						</div>
@@ -76,14 +73,14 @@
 	</div>
 	
 	<div id="playRoom" title="第 0001 遊戲室 - 井字遊戲" style="display: none">
-		<img id="loser" src="images/loser.jpg">
-		<img id="winner" src="images/winner.jpg">
-		<img id="tie" src="images/tie.jpg">
+		<img id="loser" src="<?= $config->imgRoot ?>loser.jpg">
+		<img id="winner" src="<?= $config->imgRoot ?>winner.jpg">
+		<img id="tie" src="<?= $config->imgRoot ?>tie.jpg">
 		<div class="playerBox">
 			<label id="you_nickname">--等待對手加入--</label>
-			<img id="you_img" src="images/head/head_0.jpg">
+			<img id="you_img" src="<?= $config->imgRoot ?>head/head_0.jpg">
 			<div id="whosturn">該你/妳囉</div>
-			<img id="other_img" src="images/head/head_0.jpg">
+			<img id="other_img" src="<?= $config->imgRoot ?>head/head_0.jpg">
 			<label id="other_nickname">--等待對手加入--</label>
 		</div>
 		<div class="gameController">

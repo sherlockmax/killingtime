@@ -16,7 +16,7 @@ class Config {
         $this->projectName = 'KillingTime 殺時間';
         
         /* 專案目錄結構設定 */
-        $this->root = '/';
+        $this->root = '/killingtime/';
         $this->imgRoot = $this->root . 'views/images/';
         $this->cssRoot = $this->root . 'views/css/';
         $this->jsRoot = $this->root . 'views/js/';

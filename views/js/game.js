@@ -90,6 +90,8 @@ $(document).ready(function(){
 						$(newGameRoom).attr('id', 'room_' + this.roomID);
 						$(newGameRoom).find('label[class=title]').text('第 '+ this.roomID +' 室  '+ this.gameName);
 						$(newGameRoom).find('label[class=playerName]').text(playerName);
+						$(newGameRoom).find('#btn_createGameRoom').text('進入挑戰');
+						$(newGameRoom).find('#btn_createGameRoom').attr('id', "btn_joinGameRoom");
 						$('#gameList').append(newGameRoom);
 						$('#room_'+ this.roomID).show();
 					}
@@ -168,7 +170,7 @@ $(document).ready(function(){
 						$(this).find('#you_img').attr("src", imgRoot + "head/"+data.player1.account+".jpg");
 						
 						$(this).find('#btn_sendMessage').button({disabled: true});
-						$(this).find('#btn_sendMessage').attr("name", "roomID_" +data.roomID);
+						$(this).find('#btn_sendMessage').attr("name", "roomID_" +data.roomID);						
 				},
 				buttons: {
 					"離開": function() {
@@ -250,17 +252,17 @@ $(document).ready(function(){
 			}
 		}
 	});
-	
-	$('#btn_createGameRoom').click(function(){
-		$("#createGameRoomSetting").dialog("open");
-		$('#CGR_gameName').selectmenu({width: 250});
-	});
-	
+		
 	$('#gameList').delegate('a', 'click', function(){
-		var roomID = $(this).closest("li").attr("id").split("_")[1];
-		dataBox.action = 'joinGameRoom';
-		dataBox.data = {'roomID' : roomID, "player" : player};
-		sendData(dataBox);
+		if($(this).attr('id') == 'btn_createGameRoom'){
+			$("#createGameRoomSetting").dialog("open");
+			$('#CGR_gameName').selectmenu({width: 250});
+		}else{
+			var roomID = $(this).closest("li").attr("id").split("_")[1];
+			dataBox.action = 'joinGameRoom';
+			dataBox.data = {'roomID' : roomID, "player" : player};
+			sendData(dataBox);
+		}
 	});
 	
 	

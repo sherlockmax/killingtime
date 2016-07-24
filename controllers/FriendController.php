@@ -48,8 +48,12 @@ class FriendController extends Controller {
         if(empty($data)){
             $result['player'] = NULL;
         }else{
-            $friendStatus = $friend->getFriendStatus($_SESSION['player']['account'], $data['account']);
-            $data['friendStatus'] = Tools::checkFriendStatus($friendStatus, $_SESSION['player']['account']);
+			if($_SESSION['player']['account'] == $data['account']){
+				$data['friendStatus'] = "self";
+			}else{
+				$friendStatus = $friend->getFriendStatus($_SESSION['player']['account'], $data['account']);
+				$data['friendStatus'] = Tools::checkFriendStatus($friendStatus, $_SESSION['player']['account']);
+			}
             $result['player'] = $data;
         }
         $result['action'] = 'findPlayer';
