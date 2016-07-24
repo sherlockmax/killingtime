@@ -208,10 +208,10 @@
 								<div style="text-align: center;">
 									<img id="imgHead" style="width: 150px; height: 150px;" src="<?= $config->imgRoot ?>head/<?=$player['account']?>.jpg" />
 									<br />
-									<br />
-									<label><?=$player['nickname']?></label>
 									<br /> 
 									<label><?=$player['email']?></label>
+									<br />
+									<label>勝場：100&nbsp;&nbsp;敗場：50&nbsp;&nbsp;平場：20</label>
 								</div>
 								<span><a href="<?= $config->root ?>player">編輯基本資料</a></span>
 								<span><a id="btn_logout" href="javascript:void(0);">登出</a></span>
