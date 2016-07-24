@@ -1,17 +1,11 @@
-<?php
-if (session_status() == PHP_SESSION_NONE) {
-    session_start();
-}
-$pageName = 'gameLobby'; 
-?>
 <!DOCTYPE HTML>
 <html>
 <head>
 	<?PHP include_once('init.php'); ?>
 	<script>
 		var player = {
-			account : '<?= $_SESSION["player"]["account"] ?>',
-			nickname : '<?= $_SESSION["player"]["nickname"] ?>'
+			account : '<?= $player["account"] ?>',
+			nickname : '<?= $player["nickname"] ?>'
 		};
 		$(document).ready(function(){			
 			$("#show_findGameRoom").button({
