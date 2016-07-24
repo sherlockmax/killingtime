@@ -1,9 +1,3 @@
-<?php 
-if (session_status() == PHP_SESSION_NONE) {
-    session_start();
-}
-$pageName = 'friendManage';
-?>
 <!DOCTYPE HTML>
 <html>
 <head>

@@ -20,7 +20,8 @@ class App{
                 session_start();
             }
     		if(empty( $_SESSION['isLogin'] ) || $_SESSION['isLogin'] != 'true'){
-    		    header("Location: /home");
+    		    header("Location: ".$config->root."home");
+    		    exit;
     		}
         }
         

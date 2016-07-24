@@ -1,13 +1,12 @@
 <?php
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 require_once "core/Tools.php";
 
 class PlayerController extends Controller {
     
-    
     function setDefaultValue($player){
-        if (session_status() == PHP_SESSION_NONE) {
-            session_start();
-        }
         $player->account = isset( $_POST["account"] ) ? $_POST["account"] : "" ;
         $player->password = isset( $_POST["password"] ) ? $_POST["password"] : "" ;
         $player->email = isset( $_POST["email"] ) ? $_POST["email"] : "" ;
@@ -15,7 +14,7 @@ class PlayerController extends Controller {
         $player->isOnline = isset( $_SESSION["isLogin"] ) ? "是" : "否";
     }
     
-    function setDataToClass($player, $data){
+    function setDataToModel($player, $data){
         $player->account = isset( $data["account"] ) ? $data["account"] : "" ;
         $player->password = isset( $data["password"] ) ? $data["password"] : "" ;
         $player->email = isset( $data["email"] ) ? $data["email"] : "" ;
@@ -36,32 +35,20 @@ class PlayerController extends Controller {
         $player->password_hash = Tools::getPasswordHash($player->password);
         
         $data = $player->getPlayer();
-        
-        if (session_status() == PHP_SESSION_NONE) {
-            session_start();
-        }
-		
+
         if(empty($data)){
-            $_SESSION['errMsg'] = '登入失敗，請確認帳號或密碼是否正確。';
-        }
-		if($data['isOnline'] == "是"){
-			$_SESSION['errMsg'] = '重複登入，請確認是否有其他裝置正在登入。';
-		}
-		
-		if(!isset($_SESSION['errMsg'])){
-			$_SESSION['isLogin'] = true;
+            $pageData['errMsg'] = '登入失敗，請確認帳號或密碼是否正確。';
+        }else{
+            
+            $_SESSION['isLogin'] = true;
             $_SESSION['player'] = $data;
             $player->setLoginState($data['account']);
 		}
 
-        $this->view("index");
+        $this->view("index", $pageData);
     }
     
     function logout(){
-        if (session_status() == PHP_SESSION_NONE) {
-            session_start();
-        }
-
         $player = $this->model("player");
         $player->setLogoutState($_SESSION['player']['account']);
 
@@ -71,9 +58,6 @@ class PlayerController extends Controller {
     }
     
     function registe(){
-        if (session_status() == PHP_SESSION_NONE) {
-            session_start();
-        }
         $isPass = true;
         $player = $this->model("player");
         $this->setDefaultValue($player);
@@ -84,9 +68,8 @@ class PlayerController extends Controller {
         if($isPass){
             $data = $player->getPlayerByAccount();
             if(!empty($data)){
-                
-                $_SESSION['show_form'] = 'show_registe';
-                $_SESSION['err_registe'] = '申請失敗，帳號已被使用。';
+                $pageData['show_form'] = 'show_registe';
+                $pageData['err_registe'] = '申請失敗，帳號已被使用。';
                 $isPass = false;
             }
         }
@@ -94,8 +77,8 @@ class PlayerController extends Controller {
         if($isPass){
             $data = $player->getPlayerByNickname();
             if(!empty($data)){
-                $_SESSION['show_form'] = 'show_registe';
-                $_SESSION['err_registe'] = '申請失敗，暱稱已被使用。';
+                $pageData['show_form'] = 'show_registe';
+                $pageData['err_registe'] = '申請失敗，暱稱已被使用。';
                 $isPass = false;
             }
         }
@@ -103,12 +86,13 @@ class PlayerController extends Controller {
         if($isPass){
             $data = $player->addPlayer();
             
-            copy('images/head/head_'.rand(1, 10).'.jpg', 'images/head/'.$player->account.'.jpg');
-            $_SESSION['show_form'] = 'show_registe';
-            $_SESSION['err_registe'] = '會員申請成功。';
+            copy('.'.$this->config()->imgRoot . 'head/head_'.rand(1, 10).'.jpg', '.'.$this->config()->imgRoot . 'head/'.$player->account.'.jpg');
+            $pageData['account'] = $player->account;
+            $pageData['show_form'] = 'show_login';
+            $pageData['alert_message'] = '會員申請成功。';
         }
 
-        $this->view("index");
+        $this->view("index", $pageData);
     }
     
     function isAccountExsist(){
@@ -134,10 +118,6 @@ class PlayerController extends Controller {
     }
     
     function updateData(){
-        if (session_status() == PHP_SESSION_NONE) {
-            session_start();
-        } 
-        
         $player = $this->model("player");
         $this->setDefaultValue($player);
         $player->account = $_SESSION['player']['account'];
@@ -149,26 +129,22 @@ class PlayerController extends Controller {
         }
         
         if($player->updateData()){
-            $_SESSION['err_update'] = '修改成功';
+            $pageData['err_update'] = '修改成功';
             $data = $player->getPlayerByAccount();
             $_SESSION['player'] = $data;
         }else{
-            $_SESSION['err_update'] = '修改失敗';
+            $pageData['err_update'] = '修改失敗';
         }
         
-        $this->view("player");
+        $this->view("player", $pageData);
     }
     
         
     function forgetPassword(){
-        if (session_status() == PHP_SESSION_NONE) {
-            session_start();
-        }
-        
         $player = $this->model("player");
         $this->setDefaultValue($player);
         $data = $player->getPlayerByAccount();
-        $this->setDataToClass($player, $data);
+        $this->setDataToModel($player, $data);
         $player->password = Tools::getRandPassword();
         $player->updatetime = Tools::getCurrentDateTime();
         $player->password_hash = Tools::getPasswordHash($player->password);
@@ -178,27 +154,24 @@ class PlayerController extends Controller {
         $data = $player->getPlayerByAccount();
         $data['password'] = $player->password;
         
-        $_SESSION['show_form'] = 'show_forgetPassword';
+        $pageData['show_form'] = 'show_forgetPassword';
         if(!empty($data) && !empty($data['email'])){
             if(Tools::sendResetPasswordMail($data)){
-                $_SESSION['err_forgetPassword'] = '密碼重置申請信成功寄至'.$data['email'];
+                $pageData['err_forgetPassword'] = '密碼重置申請信成功寄至'.$data['email'];
             }else{
-                $_SESSION['err_forgetPassword'] = '密碼重置申請信寄送失敗。';
+                $pageData['err_forgetPassword'] = '密碼重置申請信寄送失敗。';
             }
         }else{
-            $_SESSION['err_forgetPassword'] = '查無帳號或未設定信箱。';
+            $pageData['err_forgetPassword'] = '查無帳號或未設定信箱。';
         }
         
-        $this->view("index");
+        $this->view("index", $pageData);
     }
     
     
     function uploadPhoto(){
 		try{
-			if (session_status() == PHP_SESSION_NONE) {
-				session_start();
-			}
-			$url = 'images/head/'. $_SESSION['player']['account'].'.jpg';
+			$url = '.'.$this->config()->imgRoot . 'head/'. $_SESSION['player']['account'].'.jpg';
 			if(file_exists($url)){
 				unlink($url);
 			}
@@ -209,9 +182,13 @@ class PlayerController extends Controller {
 			// save image
 			imagejpeg($source, $url, 100);
 			
-			$_SESSION['err_uploadPhoto'] = '照片上傳成功。';
+			if(file_exists($url)){
+				echo '照片上傳成功。';
+			}else{
+			    echo '照片上傳失敗。';
+			}
 		}catch( Exception $e ){
-			$_SESSION['err_uploadPhoto'] = '照片上傳失敗。';
+			echo '照片上傳失敗。';
 		}
     }
 }

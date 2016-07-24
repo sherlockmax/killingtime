@@ -8,17 +8,23 @@ class Controller {
     }
     
     public function view($view, $data = Array()) {
-        $config = new config();
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
+        $config = $this->config();
+        $player = Array();
+        if(isset($_SESSION['player'])){
+            $player = $_SESSION['player'];
+        }
+        $isLogin = null;
+        if(isset($_SESSION['isLogin'])){ 
+            $isLogin = $_SESSION['isLogin'];
+        }
         require_once "views/$view.php";
     }
-
-    public function getSession($sessionKey, $isRemove = false){
-        if(isset($_SESSION[$sessionKey])){
-            echo $_SESSION[$sessionKey];
-            if($isRemove){
-                unset($_SESSION[$sessionKey]);
-            }
-        }
+    
+    public function config(){
+        return new config();
     }
 }
 ?>

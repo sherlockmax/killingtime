@@ -1,9 +1,3 @@
-<?php 
-if (session_status() == PHP_SESSION_NONE) {
-    session_start();
-}
-$pageName = 'index'; 
-?>
 <!DOCTYPE HTML>
 <html>
 <head>
@@ -93,8 +87,16 @@ $pageName = 'index';
 						isPass = false;
 					}	
 				});
+				if(!isPass_account){
+					setErrMsg('registe', '該帳號已被使用。');
+					isPass = false;
+				}
+				if(!isPass_nickname){
+					setErrMsg('registe', '該暱稱已被使用。');
+					isPass = false;
+				}
 				
-				if(isPass && isPass_account && isPass_nickname){
+				if(isPass){
 					$('#form_registe').find('form').attr("action","/player/registe").submit();
 				}
 			});
@@ -164,23 +166,17 @@ $pageName = 'index';
 		});
 	</script>
 	<?PHP
-		if(isset($_SESSION['show_form']) && isset($_SESSION['err_registe'])){
+		if(isset($data['show_form']) && isset($data['err_registe'])){
 			echo "<script>$(window).on('load', function() {";
-			echo "$('#".$_SESSION['show_form']."').trigger('click');";
-			echo "setErrMsg('registe', '".$_SESSION['err_registe']."');";
+			echo "$('#".$data['show_form']."').trigger('click');";
+			echo "setErrMsg('registe', '".$data['err_registe']."');";
 			echo "});</script>";
-			
-			unset($_SESSION['show_form']);
-			unset($_SESSION['err_registe']);
 		}
-		if(isset($_SESSION['show_form']) && isset($_SESSION['err_forgetPassword'])){
+		if(isset($data['show_form']) && isset($data['err_forgetPassword'])){
 			echo "<script>$(window).on('load', function() {";
-			echo "$('#".$_SESSION['show_form']."').trigger('click');";
-			echo "setErrMsg('forgetPassword', '".$_SESSION['err_forgetPassword']."');";
+			echo "$('#".$data['show_form']."').trigger('click');";
+			echo "setErrMsg('forgetPassword', '".$data['err_forgetPassword']."');";
 			echo "});</script>";
-			
-			unset($_SESSION['show_form']);
-			unset($_SESSION['err_forgetPassword']);
 		}
 	?>
 </head>
@@ -205,17 +201,17 @@ $pageName = 'index';
 							</div>
 						</div>
 						
-						<div id="form_player" <?PHP if(!isset($_SESSION['isLogin'])){ echo 'style="display: none;"'; }?> >
-							<h3>歡迎回來！ <?= isset($_SESSION['player']['nickname']) ? $_SESSION['player']['nickname']:"訪客"; ?></h3>
+						<div id="form_player" <?PHP if(empty($isLogin)){ echo 'style="display: none;"'; }?> >
+							<h3>歡迎回來！ <?=$player['nickname']?></h3>
 							<form method="post">
 							<div>
 								<div style="text-align: center;">
-									<img id="imgHead" style="width: 150px; height: 150px;" src="<?= $config->imgRoot ?>head/<?= isset($_SESSION['player']['account']) ? $_SESSION['player']['account']:"head_01"; ?>.jpg" />
+									<img id="imgHead" style="width: 150px; height: 150px;" src="<?= $config->imgRoot ?>head/<?=$player['account']?>.jpg" />
 									<br />
 									<br />
-									<label><?= isset($_SESSION['player']['nickname']) ? $_SESSION['player']['nickname']:"訪客"; ?></label>
+									<label><?=$player['nickname']?></label>
 									<br /> 
-									<label><?= isset($_SESSION['player']['email']) ? $_SESSION['player']['email']:"Here is your email"; ?></label>
+									<label><?=$player['email']?></label>
 								</div>
 								<span><a href="<?= $config->root ?>player">編輯基本資料</a></span>
 								<span><a id="btn_logout" href="javascript:void(0);">登出</a></span>
@@ -224,17 +220,17 @@ $pageName = 'index';
 							</form>
 						</div>
 						
-						<div id="form_login" <?PHP if(isset($_SESSION['isLogin'])){ echo 'style="display: none;"'; }?>>
+						<div id="form_login" <?PHP if(!empty($isLogin)){ echo 'style="display: none;"'; }?>>
 							<form method="post" action="<?= $config->root ?>player/login">
 							<h3>會員登入</h3>
 							<div>
 								<div>
 									<label for="account">帳號</label>
-									<input type="text" class="form-control" id="account" name="account" value="<?PHP if(isset($_POST['account'])){ trim($_POST['account']); } ?>">
+									<input type="text" class="form-control" id="account" name="account" value="<?PHP if(isset($_POST['account'])){ echo trim($_POST['account']); } ?>">
 									<label for="password">密碼</label>
 									<input type="password" class="form-control" id="password" name="password">
 								</div>
-								<span id='err_login'><?PHP $this->getSession('errMsg', true);  ?></span>
+								<span id='err_login'><?= $data['errMsg'];  ?></span>
 								<span><a id="btnLogin_submit" href="javascript:void(0);">登入</a></span>
 								<br />
 								<a class="a_link" id="show_registe" href="javascript:void(0);" style="float: left; margin-left: 5px;">會員申請</a>
@@ -250,18 +246,18 @@ $pageName = 'index';
 							<div>
 								<div>
 									<label for="account">帳號</label>
-									<input type="text" class="form-control" id="account" name="account" value="<?PHP if(isset($_POST['account'])){ trim($_POST['account']); } ?>">
+									<input type="text" class="form-control" id="account" name="account" value="<?PHP if(isset($_POST['account'])){ echo trim($_POST['account']); } ?>">
 									<label for="nickName">暱稱</label>
-									<input type="text" class="form-control" id="nickname" name="nickname" value="<?PHP if(isset($_POST['nickname'])){ trim($_POST['nickname']); } ?>">
+									<input type="text" class="form-control" id="nickname" name="nickname" value="<?PHP if(isset($_POST['nickname'])){ echo trim($_POST['nickname']); } ?>">
 									<label for="email">信箱</label>
-									<input type="email" class="form-control" id="email" name="email" value="<?PHP if(isset($_POST['email'])){ trim($_POST['email']); } ?>">
+									<input type="email" class="form-control" id="email" name="email" value="<?PHP if(isset($_POST['email'])){ echo trim($_POST['email']); } ?>">
 									<label for="password">密碼</label>
 									<input type="password" class="form-control" id="password" name="password">
 									<label for="passwordCheck">密碼確認</label>
 									<input type="password" class="form-control" id="passwordCheck" name="passwordCheck">
 									<label><input type="checkbox" value="agree" name="termsOfService">同意『<a class="a_link" id="termsOfserv" href="javascript:void(0);">服務條款</a>』</label>
 								</div>
-								<span id='err_registe'><?PHP $this->getSession('err_registe', true);  ?></span>
+								<span id='err_registe'><?= $data['err_registe'];  ?></span>
 								<span><a id="btn_registeSubmit" href="javascript:void(0);">送出申請</a></span>
 								<span><a id="btn_resetForm" href="javascript:void(0);">重新填寫</a></span>
 								<br />
@@ -278,7 +274,7 @@ $pageName = 'index';
 									<label for="account">帳號</label>
 									<input type="email" class="form-control" id="account" name="account" value="<?PHP if(isset($_POST['account'])){ trim($_POST['account']); } ?>">
 								</div>
-								<span id='err_forgetPassword'><?PHP $this->getSession('err_forgetPassword', true);  ?></span>
+								<span id='err_forgetPassword'><?= $data['err_forgetPassword'];  ?></span>
 								<span><a id="btn_newPasswordApply" href="javascript:void(0);">申請密碼重置</a></span>
 								<br />
 								<a class="a_link" id="show_login" href="javascript:void(0);" style="float: left; margin-left: 5px;">回登入頁</a>

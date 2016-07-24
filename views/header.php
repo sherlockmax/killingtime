@@ -1,24 +1,24 @@
 <div class="loaderBox"><div class="loader"></div></div>
 
-<?PHP if(isset($_SESSION['isLogin'])){ ?>
+<?PHP if(!empty($isLogin)){ ?>
 <div id="header">
 	<div>
 		<div>
 			<a href="<?= $config->root ?>home" class="logo"><img src="<?= $config->imgRoot ?>logo2.png" alt="KT 殺時間"></a>
 			<ul>
-				<li <?PHP if($pageName=='index'){echo 'class="selected"';} ?>>
+				<li <?PHP if($view=='index'){echo 'class="selected"';} ?>>
 					<a href="<?= $config->root ?>home" id="menu1">首頁</a>
 				</li>
-				<li <?PHP if($pageName=='memberEdit'){echo 'class="selected"';} ?>>
+				<li <?PHP if($view=='player'){echo 'class="selected"';} ?>>
 					<a href="<?= $config->root ?>player" id="menu2">基本資料</a>
 				</li>
-				<li <?PHP if($pageName=='gameLobby'){echo 'class="selected"';} ?>>
+				<li <?PHP if($view=='game'){echo 'class="selected"';} ?>>
 					<a href="<?= $config->root ?>game" id="menu3">遊戲大廳</a>
 				</li>
-				<li <?PHP if($pageName=='friendManage'){echo 'class="selected"';} ?>>
+				<li <?PHP if($view=='friend'){echo 'class="selected"';} ?>>
 					<a href="<?= $config->root ?>friend" id="menu4">好友管理</a>
 				</li>
-				<li <?PHP if($pageName=='index'){echo 'class="selected"';} ?>>
+				<li>
 					<a href="<?= $config->root ?>player/logout" id="menu5">登出</a>
 				</li>
 			</ul>

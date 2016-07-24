@@ -5,6 +5,7 @@
         }
     },
     "require": {
-        "cboden/ratchet": "^0.3.5"
+        "cboden/ratchet": "^0.3.5",
+        "phpunit/phpunit": "^4.8"
     }
 }

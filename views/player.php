@@ -1,14 +1,7 @@
-<?php
-if (session_status() == PHP_SESSION_NONE) {
-    session_start();
-}
-$pageName = 'memberEdit';
-?>
 <!DOCTYPE HTML>
 <html>
 <head>
 	<?PHP include_once('init.php'); ?>
-	
 	<script src="<?= $config->jsRoot ?>cropImg.js"></script>
 	<link rel="stylesheet" href="<?= $config->cssRoot ?>cropImg.css"/>
 	<style>
@@ -32,7 +25,7 @@ $pageName = 'memberEdit';
 			var foo = new CROP();
 			foo.init({
 				container: '.default',
-				image: "<?= $config->imgRoot ?>head/<?= $_SESSION['player']['account'] ?>.jpg",
+				image: "<?= $config->imgRoot ?>head/<?= $player['account'] ?>.jpg",
 				width: 150,
 				height: 150,
 				mask: true,
@@ -42,26 +35,6 @@ $pageName = 'memberEdit';
 					max: 5
 				}
 			});
-			
-			$( "#dialog_photo_successed, #dialog_photo_failed" ).dialog({
-				autoOpen: false,
-				resizable: false,
-				show: {
-					effect: "blind",
-					duration: 400
-				},
-				hide: {
-					effect: "blind",
-					duration: 400
-				},
-				buttons: {
-					"確認": function() {
-						$( this ).dialog( "close" );
-					}
-				}
-			});
-			
-			
 			
 			$('div[data-imgcrop] input[type="range"]').addClass("div_hide");
 			$('.crop-overlay').addClass("div_hide");
@@ -81,16 +54,42 @@ $pageName = 'memberEdit';
 					type: "post",
 					url: "<?= $config->root ?>player/uploadPhoto",
 					data: foo.crop(150, 150, 'jpg')
-				}).fail(function(){
-					location.reload();
+				}).fail(function(data){
+					$('div #alertMsg').attr("title", "提示訊息");
+					$('div #alertMsg').html(data);
+					$("div #alertMsg").dialog({
+						modal: true,
+						autoOpen: true,
+						resizable: false,
+						draggable: false,
+						buttons: {
+							"確認": function() {
+								$( this ).dialog( "close" );
+								location.reload();
+							}
+						}
+					});
 				})
 				.done(function(data) {
-					location.reload();
+					$('div #alertMsg').attr("title", "提示訊息");
+					$('div #alertMsg').html(data);
+					$("div #alertMsg").dialog({
+						modal: true,
+						autoOpen: true,
+						resizable: false,
+						draggable: false,
+						buttons: {
+							"確認": function() {
+								$( this ).dialog( "close" );
+								location.reload();
+							}
+						}
+					});
 				});
 			});
 			
 			$('#btn_reset').click(function(){
-				$('#form_editProfile').find('form').trigger('reset');
+				$('#form_updateProfile').find('form').trigger("reset");
 			});
 			
 			$('#btn_update').click(function(){
@@ -124,13 +123,13 @@ $pageName = 'memberEdit';
 			});
 			
 			$('#form_updateProfile').find("#nickname").on("blur change",function(){
-				if($(this).val() != '<?PHP echo $_SESSION['player']['nickname'] ?>'){
+				if($(this).val() != '<?=$player['nickname']?>'){
 					$.ajax({
 						method: "POST",
 						url: "<?= $config->root ?>player/isNicknameExsist",
 						data: { nickname: $(this).val() }
 					}).done(function( msg ) {
-						if(msg){
+						if(msg == "true"){
 							setErrMsg('update', '該暱稱已被使用。');
 							isPass_nickname = false;
 						}else{
@@ -143,15 +142,6 @@ $pageName = 'memberEdit';
 		});
 		
 	</script>
-	<?PHP
-		if(isset($_SESSION['err_uploadPhoto'])){
-			echo "<script>$(window).on('load', function() {";
-			echo "alertMsg('提示訊息', '".$_SESSION['err_uploadPhoto']."');";
-			echo "});</script>";
-
-			unset($_SESSION['err_uploadPhoto']);
-		}
-	?>
 </head>
 <body>
 	<div id="background">
@@ -187,17 +177,17 @@ $pageName = 'memberEdit';
 							<div>
 								<div>
 									<label for="account">帳號(不可更改)</label>
-									<input type="text" class="form-control" id="account" name="account" disabled value="<?= $_SESSION['player']['account'] ?>">
+									<input type="text" class="form-control" id="account" name="account" disabled value="<?= $player['account'] ?>">
 									<label for="nickName">暱稱</label>
-									<input type="text" class="form-control" id="nickname" name="nickname" value="<?= $_SESSION['player']['nickname'] ?>">
+									<input type="text" class="form-control" id="nickname" name="nickname" value="<?= $player['nickname'] ?>">
 									<label for="account">信箱</label>
-									<input type="email" class="form-control" id="email" name="email" value="<?= $_SESSION['player']['email'] ?>">
+									<input type="email" class="form-control" id="email" name="email" value="<?= $player['email'] ?>">
 									<label for="password">新密碼</label>
 									<input type="password" class="form-control" id="password" name="password">
 									<label for="passwordCheck">新密碼確認</label>
 									<input type="password" class="form-control" id="passwordCheck" name="passwordCheck">
 								</div>
-								<span id='err_update'><?PHP $this->getSession('err_update', true);  ?></span>
+								<span id='err_update'><?PHP echo $data['err_update'];  ?></span>
 								<span><a id="btn_update" href="javascript:void(0);">確認修改</a></span>
 								<span><a id="btn_reset" href="javascript:void(0);">重新填寫</a></span>
 							</div>

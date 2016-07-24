@@ -1,22 +1,24 @@
 <?php
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 require_once "core/Tools.php";
 
 class FriendController extends Controller {
     
+    private $pageData = Array();
+    
     function index() {
-        if (session_status() == PHP_SESSION_NONE) {
-            session_start();
-        }
         $friend = $this->model("friend");
         $data = $friend->getFriendList($_SESSION['player']['account']);
         
         //$gameRecord = $this->model("gameRecord");
         
-        $result['action'] = 'friendList';
-        $result['friendList'] = $data;
-        $result['gameRecord'] = NULL;
+        $this->pageData['action'] = 'friendList';
+        $this->pageData['friendList'] = $data;
+        $this->pageData['gameRecord'] = NULL;
 
-        $this->view("friend", $result);
+        $this->view("friend", $this->pageData);
     }
     
     function queryNicname(){
@@ -38,14 +40,11 @@ class FriendController extends Controller {
     }
     
     function findPlayer(){
-        if (session_status() == PHP_SESSION_NONE) {
-            session_start();
-        }
         $player = $this->model("player");
         $friend = $this->model("friend");
         $player->nickname = $_POST['nickname'];
         $data = $player->getPlayerByNickname();
-
+        
         if(empty($data)){
             $result['player'] = NULL;
         }else{
@@ -60,23 +59,17 @@ class FriendController extends Controller {
     }
     
     function friendInvite(){
-        if (session_status() == PHP_SESSION_NONE) {
-            session_start();
-        }
         $friend = $this->model("friend");
         $data = $friend->getFriendInvite($_SESSION['player']['account']);
-        
-        $result['action'] = 'friendInvite';
-        $result['applyList'] = $data;
-        $result['gameRecord'] = NULL;
-        
-        $this->view("friend", $result);
+
+        $this->pageData['action'] = 'friendInvite';
+        $this->pageData['applyList'] = $data;
+        $this->pageData['gameRecord'] = NULL;
+
+        $this->view("friend", $this->pageData);
     }
     
     function whoInviteMe(){
-        if (session_status() == PHP_SESSION_NONE) {
-            session_start();
-        }
         $friend = $this->model("friend");
         $data = $friend->getWhoInviteMe($_SESSION['player']['account']);
         
@@ -88,87 +81,72 @@ class FriendController extends Controller {
     }
     
     function addFriend(){
-        if (session_status() == PHP_SESSION_NONE) {
-            session_start();
-        }
         $friend = $this->model("friend");
         $updatetime = Tools::getCurrentDateTime();
         $result = $friend->addFriend($_SESSION['player']['account'], $_POST['account'], $updatetime);
         
         if($result){
-            $_SESSION['alert_message'] = "好友邀請成功";
+            $this->pageData['alert_message'] = "好友邀請成功";
         }else{
-            $_SESSION['alert_message'] = "好友邀請失敗";
+            $this->pageData['alert_message'] = "好友邀請失敗";
         }
-        
+
         $this->friendInvite();
     }
     
     
     function acceptInvite(){
-        if (session_status() == PHP_SESSION_NONE) {
-            session_start();
-        }
         $friend = $this->model("friend");
         $updatetime = Tools::getCurrentDateTime();
         $result = $friend->acceptInvite($_POST['account'], $_SESSION['player']['account'], $updatetime);
         
         if($result){
-            $_SESSION['alert_message'] = "接受好友邀請成功";
+             $this->pageData['alert_message'] = "接受好友邀請成功";
         }else{
-            $_SESSION['alert_message'] = "接受好友邀請失敗";
+             $this->pageData['alert_message'] = "接受好友邀請失敗";
         }
         
-        header("Location: /friend");
+        $this->index();
     }
     
     
     function rejectInvite(){
-        if (session_status() == PHP_SESSION_NONE) {
-            session_start();
-        }
         $friend = $this->model("friend");
         $updatetime = Tools::getCurrentDateTime();
         $result = $friend->deleteFriend($_POST['account'], $_SESSION['player']['account']);
         
         if($result){
-            $_SESSION['alert_message'] = "拒絕好友邀請成功";
+             $this->pageData['alert_message'] = "拒絕好友邀請成功";
         }else{
-            $_SESSION['alert_message'] = "拒絕好友邀請失敗";
+             $this->pageData['alert_message'] = "拒絕好友邀請失敗";
         }
         
         $this->friendInvite();
     }
     
     function removeFriend(){
-        if (session_status() == PHP_SESSION_NONE) {
-            session_start();
-        }
         $friend = $this->model("friend");
         $updatetime = Tools::getCurrentDateTime();
         $result = $friend->deleteFriend($_POST['account'], $_SESSION['player']['account']);
         
         if($result){
-            $_SESSION['alert_message'] = "刪除好友成功";
+             $this->pageData['alert_message'] = "刪除好友成功";
         }else{
-            $_SESSION['alert_message'] = "刪除好友失敗";
+             $this->pageData['alert_message'] = "刪除好友失敗";
         }
         
-        header("Location: /friend");
+        $this->index();
     }
     
     function deleteInvite(){
-        if (session_status() == PHP_SESSION_NONE) {
-            session_start();
-        }
         $friend = $this->model("friend");
         $updatetime = Tools::getCurrentDateTime();
         $result = $friend->deleteFriend($_POST['account'], $_SESSION['player']['account']);
         
         if($result){
-            $_SESSION['alert_message'] = "取消邀請成功";
+             $this->pageData['alert_message'] = "取消邀請成功";
         }else{
-            $_SESSION['alert_message'] = "取消邀請失敗";
+             $this->pageData['alert_message'] = "取消邀請失敗";
         }
         
         $this->friendInvite();

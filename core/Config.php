@@ -16,10 +16,10 @@ class Config {
         $this->projectName = 'KillingTime 殺時間';
         
         /* 專案目錄結構設定 */
-        $this->root = '/killingtime/';
-        $this->imgRoot = $this->root . 'images/';
-        $this->cssRoot = $this->root . 'css/';
-        $this->jsRoot = $this->root . 'js/';
+        $this->root = '/';
+        $this->imgRoot = $this->root . 'views/images/';
+        $this->cssRoot = $this->root . 'views/css/';
+        $this->jsRoot = $this->root . 'views/js/';
 
         /* 資料庫連線設定 */
         $this->db['host']       = 'localhost';
