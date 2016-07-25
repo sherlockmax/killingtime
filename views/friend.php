@@ -324,7 +324,7 @@
 											<li class="historyListLine">
 												<label>
 													<form method="post">
-													<span style="display: inline-block; width: 160px;color: #6495ED	; font-size: 20px; font-weight: bold;"><?=$player['nickname']?></span>
+													<span style="display: inline-block; width: 150px;color: #6495ED	; font-size: 20px; font-weight: bold;"><?=$player['nickname']?></span>
 													<span style="font-size: 20px; font-weight: bold;">井字遊戲</span>
 													<?PHP if($player['winner'] == 'tie'){?>
 													<span style="color: yellow; font-size: 20px; font-weight: bold;">和局</span>
