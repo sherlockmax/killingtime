@@ -111,7 +111,7 @@
 				}
 				
 				if(data.account.length <= 0){
-					setErrMsg('login', '請輸入帳號或暱稱。');
+					setErrMsg('login', '請輸入帳號。');
 					isPass = false;
 				}
 				

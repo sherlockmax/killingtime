@@ -311,7 +311,7 @@
 						<div class="aside">
 							<ul>
 								<li>
-									<h3>近期對戰玩家</h3>
+									<h3>近期對戰紀錄</h3>
 									<div class="friendListBox">
 										<ul>
 											<?PHP if( empty($data['gameRecord']) ) {  ?>
@@ -324,10 +324,8 @@
 											<li class="historyListLine">
 												<label>
 													<form method="post">
-													<span style="color: #6495ED	; font-size: 20px; font-weight: bold;"><?=$player['nickname']?></span>
-													&nbsp;&nbsp;&nbsp;&nbsp;
+													<span style="display: inline-block; width: 160px;color: #6495ED	; font-size: 20px; font-weight: bold;"><?=$player['nickname']?></span>
 													<span style="font-size: 20px; font-weight: bold;">井字遊戲</span>
-													&nbsp;&nbsp;&nbsp;&nbsp;
 													<?PHP if($player['winner'] == 'tie'){?>
 													<span style="color: yellow; font-size: 20px; font-weight: bold;">和局</span>
 													<?PHP }else if($player['winner'] == $player['playerAccount']){?>
