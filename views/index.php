@@ -272,7 +272,7 @@
 							<div>
 								<div>
 									<label for="account">帳號</label>
-									<input type="email" class="form-control" id="account" name="account" value="<?PHP if(isset($_POST['account'])){ trim($_POST['account']); } ?>">
+									<input type="text" class="form-control" id="account" name="account" value="<?PHP if(isset($_POST['account'])){ trim($_POST['account']); } ?>">
 								</div>
 								<span id='err_forgetPassword'><?= $data['err_forgetPassword'];  ?></span>
 								<span><a id="btn_newPasswordApply" href="javascript:void(0);">申請密碼重置</a></span>
