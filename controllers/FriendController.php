@@ -9,14 +9,26 @@ class FriendController extends Controller {
     private $pageData = Array();
     
     function index() {
+		$game = $this->model("game");
+		
         $friend = $this->model("friend");
         $data = $friend->getFriendList($_SESSION['player']['account']);
         
         //$gameRecord = $this->model("gameRecord");
+		$friendList = array();
+		foreach($data as $player){
+			$gameScore = array("win" => 0, "lose" => 0, "tie" => 0);
+			$gameScore = $game->getScore($player['account']);
+			$player['score'] = $gameScore;
+			
+			$friendList[] = $player;
+		}
+		
+		$gameRecord = $game->getHistory($_SESSION['player']['account']);
         
         $this->pageData['action'] = 'friendList';
-        $this->pageData['friendList'] = $data;
-        $this->pageData['gameRecord'] = NULL;
+        $this->pageData['friendList'] = $friendList;
+        $this->pageData['gameRecord'] = $gameRecord;
 
         $this->view("friend", $this->pageData);
     }
@@ -55,9 +67,18 @@ class FriendController extends Controller {
 				$data['friendStatus'] = Tools::checkFriendStatus($friendStatus, $_SESSION['player']['account']);
 			}
             $result['player'] = $data;
+			
+			$gameScore = array("win" => 0, "lose" => 0, "tie" => 0);
+			$game = $this->model("game");
+			$gameScore = $game->getScore($data['account']);
+			
+			$result['player']['score'] = $gameScore;
         }
+		
+		$game = $this->model("game");
+		$gameRecord = $game->getHistory($_SESSION['player']['account']);
         $result['action'] = 'findPlayer';
-        $result['gameRecord'] = NULL;
+        $result['gameRecord'] = $gameRecord;
         
         $this->view("friend", $result);
     }
@@ -65,10 +86,22 @@ class FriendController extends Controller {
     function friendInvite(){
         $friend = $this->model("friend");
         $data = $friend->getFriendInvite($_SESSION['player']['account']);
-
+		
+		$friendList = array();
+		foreach($data as $player){
+			$gameScore = array("win" => 0, "lose" => 0, "tie" => 0);
+			$game = $this->model("game");
+			$gameScore = $game->getScore($player['account']);
+			$player['score'] = $gameScore;
+			
+			$friendList[] = $player;
+		}
+		
+		$game = $this->model("game");
+		$gameRecord = $game->getHistory($_SESSION['player']['account']);
         $this->pageData['action'] = 'friendInvite';
-        $this->pageData['applyList'] = $data;
-        $this->pageData['gameRecord'] = NULL;
+        $this->pageData['applyList'] = $friendList;
+        $this->pageData['gameRecord'] = $gameRecord;
 
         $this->view("friend", $this->pageData);
     }
@@ -76,10 +109,22 @@ class FriendController extends Controller {
     function whoInviteMe(){
         $friend = $this->model("friend");
         $data = $friend->getWhoInviteMe($_SESSION['player']['account']);
+		
+		$friendList = array();
+		foreach($data as $player){
+			$gameScore = array("win" => 0, "lose" => 0, "tie" => 0);
+			$game = $this->model("game");
+			$gameScore = $game->getScore($player['account']);
+			$player['score'] = $gameScore;
+			
+			$friendList[] = $player;
+		}
         
+		$game = $this->model("game");
+		$gameRecord = $game->getHistory($_SESSION['player']['account']);
         $result['action'] = 'whoInviteMe';
-        $result['applyList'] = $data;
-        $result['gameRecord'] = NULL;
+        $result['applyList'] = $friendList;
+        $result['gameRecord'] = $gameRecord;
         
         $this->view("friend", $result);
     }

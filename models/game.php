@@ -9,18 +9,16 @@ class game{
      public $memo;
      public $updatetime;
      
-     function getHistory($account){
+     function getHistory($playerAccount){
           $PDO = new myPDO();
           $conn = $PDO->getConnection();
-          $sql = "  SELECT p.account, p.nickname, p.isOnline FROM (
-                         SELECT player1 as playerAccount FROM gamerecord WHERE player2 = ?
-                         union
-                         SELECT player2 as friendAccount FROM gamerecord WHERE player1 = ?
-                    ) as f LEFT JOIN player as p ON f.friendAccount = p.account
-                    WHERE p.account IS NOT NULL";
+          $sql = "  SELECT f.*, p.nickname FROM ( 
+						(SELECT player1 as playerAccount, winner, updatetime FROM gamerecord WHERE player2 = :playerAccount) 
+						UNION ALL
+						(SELECT player2 as playerAccount, winner, updatetime FROM gamerecord WHERE player1 = :playerAccount) 
+					) as f LEFT JOIN player p ON f.playerAccount = p.account order by f.updatetime DESC LIMIT 10";
           $stmt = $conn->prepare($sql);
-          $stmt->bindValue(1, $loginAccount, PDO::PARAM_STR);
-          $stmt->bindValue(2, $loginAccount, PDO::PARAM_STR);
+          $stmt->bindValue(':playerAccount', $playerAccount, PDO::PARAM_STR);
           
           $stmt->execute();
           $data = $stmt->fetchAll();
@@ -49,6 +47,28 @@ class game{
           $PDO->closeConnection();
           
           return $data;
+	}
+	
+	function getScore($playerAccount){
+		$PDO = new myPDO();
+        $conn = $PDO->getConnection();
+		$sql = 	"SELECT SUM(win) AS win, SUM(lose) AS lose, SUM(tie) AS tie FROM (
+					(SELECT COUNT(*) AS win, 0 AS lose, 0 AS tie FROM gamerecord WHERE ( player1 = :playerAccount OR player2 = :playerAccount ) AND winner = :playerAccount)
+					UNION ALL
+					(SELECT 0 AS win, COUNT(*) AS lose, 0 AS tie FROM gamerecord WHERE ( player1 = :playerAccount OR player2 = :playerAccount ) AND winner != :playerAccount AND winner != 'tie')
+					UNION ALL
+					(SELECT 0 AS win, 0 AS lose, COUNT(*) AS tie FROM gamerecord WHERE ( player1 = :playerAccount OR player2 = :playerAccount ) AND winner = 'tie')
+				) AS t";
+		$stmt = $conn->prepare($sql);		
+          
+        $stmt->bindParam(':playerAccount', $playerAccount, PDO::PARAM_STR);
+
+		$stmt->execute();
+        $data = $stmt->fetch();
+		
+		$PDO->closeConnection();
+
+		return $data;
 	}
 }
 

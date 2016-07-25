@@ -151,10 +151,9 @@
 												<label>
 													<span style="color: #6495ED	; font-size: 20px; font-weight: bold;"><?= $player['nickname'] ?></span>
 													<br>
-													勝場：100
-													<br>
-													敗場：50</br>
-													目前在線：<?= $player['isOnline'] ?>
+													<label id="score_win">勝場：<?=$player['score']['win']?></label><br>
+													<label id="score_lose">敗場：<?=$player['score']['lose']?></label><br>
+													<label id="score_tie">平場：<?=$player['score']['tie']?></label>
 												</label>
 												<div>
 													<form method="POST">
@@ -193,10 +192,9 @@
 												<label>
 													<span style="color: #6495ED	; font-size: 20px; font-weight: bold;"><?= $data['player']['nickname'] ?></span>
 													<br>
-													勝場：100
-													<br>
-													敗場：50</br>
-													目前在線：<?= $data['player']['isOnline'] ?>
+													<label id="score_win">勝場：<?=$data['player']['score']['win']?></label><br>
+													<label id="score_lose">敗場：<?=$data['player']['score']['lose']?></label><br>
+													<label id="score_tie">平場：<?=$data['player']['score']['tie']?></label>
 												</label>
 												<div>
 													<form method="post">
@@ -240,10 +238,9 @@
 												<label>
 													<span style="color: #6495ED	; font-size: 20px; font-weight: bold;"><?= $player['nickname'] ?></span>
 													<br>
-													勝場：100
-													<br>
-													敗場：50</br>
-													目前在線：<?= $player['isOnline'] ?>
+													<label id="score_win">勝場：<?=$player['score']['win']?></label><br>
+													<label id="score_lose">敗場：<?=$player['score']['lose']?></label><br>
+													<label id="score_tie">平場：<?=$player['score']['tie']?></label>
 												</label>
 												<div>
 													<form method="post">
@@ -282,10 +279,9 @@
 												<label>
 													<span style="color: #6495ED	; font-size: 20px; font-weight: bold;"><?= $player['nickname'] ?></span>
 													<br>
-													勝場：100
-													<br>
-													敗場：50</br>
-													目前在線：<?= $player['isOnline'] ?>
+													<label id="score_win">勝場：<?=$player['score']['win']?></label><br>
+													<label id="score_lose">敗場：<?=$player['score']['lose']?></label><br>
+													<label id="score_tie">平場：<?=$player['score']['tie']?></label>
 												</label>
 												<div>
 													<form method="post">
@@ -328,12 +324,20 @@
 											<li class="historyListLine">
 												<label>
 													<form method="post">
-													<span style="color: #6495ED	; font-size: 20px; font-weight: bold;">殺很大殺很大殺很殺很</span>
-													<br>
+													<span style="color: #6495ED	; font-size: 20px; font-weight: bold;"><?=$player['nickname']?></span>
+													&nbsp;&nbsp;&nbsp;&nbsp;
 													<span style="font-size: 20px; font-weight: bold;">井字遊戲</span>
+													&nbsp;&nbsp;&nbsp;&nbsp;
+													<?PHP if($player['winner'] == 'tie'){?>
+													<span style="color: yellow; font-size: 20px; font-weight: bold;">和局</span>
+													<?PHP }else if($player['winner'] == $player['playerAccount']){?>
+													<span style="color: red; font-size: 20px; font-weight: bold;">敗北</span>
+													<?PHP }else{?>
 													<span style="color: green; font-size: 20px; font-weight: bold;">勝利</span>
-													<input type="hidden" id="account" name="account" value="">
-													<input id="btn_addFriend" type="button" value="加入好友">
+													<?PHP }?>
+													<hr style="border:0; height:1px; background-color:#696969; color: #696969">
+													<!--<input type="hidden" id="account" name="account" value="">
+													<input id="btn_addFriend" type="button" value="加入好友">-->
 													</form>
 												</label>
 											</li>

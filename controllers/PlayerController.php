@@ -25,7 +25,6 @@ class PlayerController extends Controller {
     }
     
     function index() {
-        
         $this->view("player");
     }
     
@@ -44,7 +43,11 @@ class PlayerController extends Controller {
             $_SESSION['player'] = $data;
             $player->setLoginState($data['account']);
 		}
-
+		
+		$game = $this->model("game");
+		$gameScore = $game->getScore($data['account']);
+		
+		$pageData['score'] = $gameScore;
         $this->view("index", $pageData);
     }
     
@@ -91,7 +94,7 @@ class PlayerController extends Controller {
             $pageData['show_form'] = 'show_login';
             $pageData['alert_message'] = '會員申請成功。';
         }
-
+		
         $this->view("index", $pageData);
     }
     

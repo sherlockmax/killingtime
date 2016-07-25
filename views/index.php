@@ -211,7 +211,7 @@
 									<br /> 
 									<label><?=$player['email']?></label>
 									<br />
-									<label>勝場：100&nbsp;&nbsp;敗場：50&nbsp;&nbsp;平場：20</label>
+									<label id="score_win">勝場：<?=$data['score']['win']?></label><label id="score_lose">敗場：<?=$data['score']['lose']?></label><label id="score_tie">平場：<?=$data['score']['tie']?></label>
 								</div>
 								<span><a href="<?= $config->root ?>player">編輯基本資料</a></span>
 								<span><a id="btn_logout" href="javascript:void(0);">登出</a></span>

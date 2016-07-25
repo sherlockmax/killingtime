@@ -1235,3 +1235,21 @@ div #playRoom #loser, div #playRoom #winner, div #playRoom #tie{
 	z-index: 99  !important;
 	display: none;
 }
+
+#score_win, #score_lose, #score_tie{
+	width: 100px;
+	display: inline-block;
+	margin: 0px 0px 0px 0px;
+	padding: 0px;
+}
+
+#score_win{
+	color: green;
+
+}
+#score_lose{
+	color: red;
+}
+#score_tie{
+	
+}
