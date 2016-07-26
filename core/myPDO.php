@@ -10,6 +10,7 @@ class myPDO{
           $pdo->exec("SET CHARACTER SET utf8");
           self::$connection = $pdo;
           $config = null;
+          $pdo = null;
      }
      
      function getConnection(){
