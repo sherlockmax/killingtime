@@ -39,6 +39,7 @@ class GameHandler implements MessageComponentInterface {
 		if($this->dataBox['action'] == 'setPlayer'){
 			$player = new GamePlayerModel($this->dataBox['data']['account'], $this->dataBox['data']['nickname'], $from, NULL);
 			$this->playerList[$this->getConnectionID($from)] = $player;
+			
 		}else if($this->dataBox['action'] == 'createRoom'){
 			$newRoomID = $this->getBlankRoomID();
 			$player = $this->playerList[$this->getConnectionID($from)];
@@ -51,6 +52,7 @@ class GameHandler implements MessageComponentInterface {
 			$this->sendDataTo($from->resourceId);
 			
 			$this->refreshGameRoom('all');
+			
 		}else if($this->dataBox['action'] == 'leaveRoom'){
 			$roomID = $this->dataBox['data']['roomID'];
 			$gameRoom = $this->gameRoomList[$roomID];
@@ -160,7 +162,7 @@ class GameHandler implements MessageComponentInterface {
 				}
 				
 				$gameData = $gameRoom->gameData;
-				$gameData[$tableID ] = $mark;
+				$gameData[$tableID] = $mark;
 				$gameRoom->gameData = $gameData;
 				
 				$msgArray = array("mark" => $mark, "tableID" => $tableID, "whosturn" => $whosturn);
@@ -194,6 +196,21 @@ class GameHandler implements MessageComponentInterface {
 					$this->sendDataTo($this->getConnectionID($from));
 				} 
 			}
+		}else if($this->dataBox['action'] == 'oneMoreTime'){
+			$gameRoom = $this->gameRoomList[$this->dataBox['data']['roomID']];
+
+			$gameRoom->whosturn = $gameRoom->player1->account;
+			$gameRoom->initGameData();
+			
+			$this->gameRoomList[$this->dataBox['data']['roomID']] = $gameRoom;
+			
+			$msgArray = array("whosturn" => $gameRoom->whosturn);
+			$this->dataBox['action'] = 'oneMoreTime';
+			$this->dataBox['data'] = json_encode($msgArray);
+			$this->sendDataTo($this->getConnectionID($gameRoom->player1->client));
+			$this->dataBox['action'] = 'oneMoreTime';
+			$this->dataBox['data'] = json_encode($msgArray);
+			$this->sendDataTo($this->getConnectionID($gameRoom->player2->client));
 		}
     }
 

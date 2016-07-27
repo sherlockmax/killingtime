@@ -35,16 +35,6 @@ $(document).ready(function(){
 			return false;    //<---- Add this line
 		}
 	});
-	
-	$('input[type=text]').click(function(){
-		
-		if($(this).attr("name") == 'nickname'){
-			$(this).val("夏洛克");
-		}else if($(this).attr("name") == 'account'){
-			$(this).val("sherlockmax");
-		}
-		
-	});
 });
 
 $(window).on("load", function() {

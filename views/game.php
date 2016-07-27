@@ -35,7 +35,7 @@
 						<select id="gameName" name="gameName">
 							<option disabled selected>依遊戲篩選</option>
 							<option value="TicTacToe">井字遊戲</option>
-							<!--<option value="猜數字">猜數字</option>-->
+							<option value="DarkChess">暗戰</option>
 						</select>
 						<input id="gameId" type="text" placeholder="輸入遊戲室編號">
 						<button id="show_findGameRoom" type="button">搜尋遊戲室</button>
@@ -68,7 +68,7 @@
 		<label>選擇遊戲</label>
 		<select name="gameName" id="CGR_gameName">
 			<option value="井字遊戲">井字遊戲</option>
-			<!--<option value="猜數字">猜數字</option>-->
+			<option value="暗棋">暗棋</option>
 		</select>
 	</div>
 	

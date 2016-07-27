@@ -1138,6 +1138,7 @@ div #playRoom .gameController{
 	margin: 0px 0px;
 	float: left;
 	height: 620px;
+	overflow: hidden;
 }
 
 div #playRoom .gameController ul{
@@ -1148,7 +1149,7 @@ div #playRoom .gameController ul{
 	margin: 0px 0px;
 }
 
-div #playRoom .gameController ul li{
+div #playRoom .gameController ul .TicTacToe{
 	float:left;
     clear:left;
 	padding: 5px;
@@ -1157,6 +1158,19 @@ div #playRoom .gameController ul li{
 	width: 138px;
 	height: 195px !important;
 	line-height: 195px !important;
+	text-align: center;
+	font-size: 50px;
+}
+
+div #playRoom .gameController ul .DarkChess{
+	float:left;
+    clear:left;
+	padding: 5px;
+	margin: 0px 0px;
+	border: 1px dotted gray;
+	width: 100px;
+	height: 66px !important;
+	line-height: 66px !important;
 	text-align: center;
 	font-size: 50px;
 }

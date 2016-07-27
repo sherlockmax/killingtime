@@ -109,6 +109,21 @@ $(document).ready(function(){
 			}
 		}
 		
+		if(dataBox.action == 'oneMoreTime'){
+			$('#playRoom').find('li[id^=table_]').each(function(){
+				$(this).text("");
+			});
+			$('#playRoom #tie').hide();
+			$('#playRoom #winner').hide();
+			$('#playRoom #loser').hide();
+			
+			if(data.whosturn == player.account){
+				$('#whosturn').text("該你/妳囉");
+			}else{
+				$('#whosturn').text("等待對手!");
+			}
+		}
+		
 		if(dataBox.action == 'sendMessage'){
 			$('#chatMessage').append("<label class='guestName'>"+data.nickname+"</label><label class='message'>"+data.msg+"</label>");
 			$("#chatMessage").animate({ scrollTop:  $('#chatMessage').prop("scrollHeight") }, 500);
@@ -136,6 +151,9 @@ $(document).ready(function(){
 							
 							$(this).find('#btn_sendMessage').button({disabled: false});
 							$(this).find('#btn_sendMessage').attr("name", "roomID_" +data.roomID);
+							
+							var gameBoard = drawGame(data.gameName);
+							$(".gameController").html(gameBoard);
 					},
 					buttons: {
 						"離開": function() {
@@ -152,7 +170,7 @@ $(document).ready(function(){
 			if(data.whosturn == player.account){
 				$('#whosturn').text("該你/妳囉");
 			}else{
-				$('#whosturn').text("等待對手，快用聊天室嗆他/她!");
+				$('#whosturn').text("等待對手!");
 			}
 		}
 		
@@ -168,11 +186,30 @@ $(document).ready(function(){
 				open: function() {
 						$(this).find('#you_nickname').text(data.player1.nickname);
 						$(this).find('#you_img').attr("src", imgRoot + "head/"+data.player1.account+".jpg");
-						
 						$(this).find('#btn_sendMessage').button({disabled: true});
-						$(this).find('#btn_sendMessage').attr("name", "roomID_" +data.roomID);						
+						$(this).find('#btn_sendMessage').attr("name", "roomID_" +data.roomID);	
+						var gameBoard = drawGame(data.gameName);
+						
+						$(".gameController").html(gameBoard);
 				},
 				buttons: {
+					"再來一局": function() {
+						if($('#other_nickname').text() != "--等待對手加入--"){
+							if($('#playRoom #loser').is(':visible') ||
+								$('#playRoom #tie').is(':visible') ||
+								$('#playRoom #winner').is(':visible')){
+								
+								dataBox.action = 'oneMoreTime';
+								dataBox.data = {'roomID' : data.roomID };
+								sendData(dataBox);
+							}else{
+								alertMsg("提示訊息","請先完成本局遊戲。");
+							}
+						}else{
+							alertMsg("提示訊息","尚未有對手。");
+						}
+						
+					},
 					"離開": function() {
 						dataBox.action = 'leaveRoom';
 						dataBox.data = {'roomID' : data.roomID , 'player' : player };
@@ -309,4 +346,32 @@ $(document).ready(function(){
 			sendData(dataBox);
 		}
 	});
+	
+	function drawGame(gameName){
+		var gameBoard = "";
+		var draw = {
+					"row" : 0,
+					"col" : 0,
+					"class" : ''
+		}
+		if(gameName == '井字遊戲'){
+			draw.row = 3;
+			draw.col = 3;
+			draw.class = 'TicTacToe';
+		}else if(gameName == '暗棋'){
+			draw.row = 4;
+			draw.col = 8;
+			draw.class = 'DarkChess';
+		}
+		
+		for(var row=1; row<=draw.row; row++){
+			gameBoard += "<ul>";
+			for(var col=1; col<=draw.col; col++){
+				gameBoard += "<li class='"+draw.class+"' id='table_"+row+"-"+col+"'></li>";
+			}
+			gameBoard += "</ul>";
+		}
+		
+		return gameBoard;
+	}
 });
