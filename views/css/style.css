@@ -1131,7 +1131,7 @@ img[src='Error.src']{
     display: none;
 }
 
-div #playRoom .gameController{
+div #playRoom .gameBoard{
 	border: 1px solid white;
 	width: 450px;
 	padding: 0px;
@@ -1141,7 +1141,7 @@ div #playRoom .gameController{
 	overflow: hidden;
 }
 
-div #playRoom .gameController ul{
+div #playRoom .gameBoard ul{
 	list-style: none outside none;
 	float:left;
     clear:right;
@@ -1149,7 +1149,7 @@ div #playRoom .gameController ul{
 	margin: 0px 0px;
 }
 
-div #playRoom .gameController ul .TicTacToe{
+div #playRoom .gameBoard ul .TicTacToe{
 	float:left;
     clear:left;
 	padding: 5px;
@@ -1162,7 +1162,7 @@ div #playRoom .gameController ul .TicTacToe{
 	font-size: 50px;
 }
 
-div #playRoom .gameController ul .DarkChess{
+div #playRoom .gameBoard ul .DarkChess{
 	float:left;
     clear:left;
 	padding: 5px;
@@ -1175,7 +1175,7 @@ div #playRoom .gameController ul .DarkChess{
 	font-size: 50px;
 }
 
-div #playRoom .gameController ul li:hover{
+div #playRoom .gameBoard ul li:hover{
 	border: 1px solid white;
 	cursor: pointer;
 }
@@ -1266,4 +1266,34 @@ div #playRoom #loser, div #playRoom #winner, div #playRoom #tie{
 }
 #score_tie{
 	
+}
+
+.gameBoard .BlindChess{
+	color: green;
+	background: green;
+	border-radius: 50px;
+	border: 1px solid black;
+	width: 60px;
+	height: 60px;
+	margin: 0 auto;
+}
+
+.gameBoard .redChess{
+	color: red;
+	background: white;
+	border-radius: 50px;
+	border: 1px solid green;
+	width: 60px;
+	height: 60px;
+	margin: 0 auto;
+}
+
+.gameBoard .blackChess{
+	color: black;
+	background: white;
+	border-radius: 50px;
+	border: 1px solid green;
+	width: 60px;
+	height: 60px;
+	margin: 0 auto;
 }

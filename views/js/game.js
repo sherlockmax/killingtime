@@ -18,7 +18,7 @@ $(document).ready(function(){
 	});
 	
 	function resetGameRoom(){
-		$('div #playRoom .gameController ul li').each(function(){
+		$('div #playRoom .gameBoard ul li').each(function(){
 			$(this).text("");
 		});
 		$("#chatMessage").html("");
@@ -153,7 +153,7 @@ $(document).ready(function(){
 							$(this).find('#btn_sendMessage').attr("name", "roomID_" +data.roomID);
 							
 							var gameBoard = drawGame(data.gameName);
-							$(".gameController").html(gameBoard);
+							$(".gameBoard").html(gameBoard);
 					},
 					buttons: {
 						"離開": function() {
@@ -190,7 +190,7 @@ $(document).ready(function(){
 						$(this).find('#btn_sendMessage').attr("name", "roomID_" +data.roomID);	
 						var gameBoard = drawGame(data.gameName);
 						
-						$(".gameController").html(gameBoard);
+						$(".gameBoard").html(gameBoard);
 				},
 				buttons: {
 					"再來一局": function() {
@@ -334,7 +334,7 @@ $(document).ready(function(){
 		}
 	});
 	
-	$('div #playRoom .gameController ul li').click(function(){
+	$('div #playRoom .gameBoard ul li').click(function(){
 		if($(this).text() == "" && $('#other_nickname').text() != "--等待對手加入--"){
 			if($('#whosturn').text() == "該你/妳囉"){
 				$('#whosturn').text("該對手囉");
@@ -352,26 +352,28 @@ $(document).ready(function(){
 		var draw = {
 					"row" : 0,
 					"col" : 0,
-					"class" : ''
+					"class" : '',
+					"content" : ''
 		}
 		if(gameName == '井字遊戲'){
 			draw.row = 3;
 			draw.col = 3;
 			draw.class = 'TicTacToe';
+			draw.content = '';
 		}else if(gameName == '暗棋'){
 			draw.row = 4;
 			draw.col = 8;
 			draw.class = 'DarkChess';
+			draw.content = '<div class="BlindChess"></div>';
 		}
 		
 		for(var row=1; row<=draw.row; row++){
 			gameBoard += "<ul>";
 			for(var col=1; col<=draw.col; col++){
-				gameBoard += "<li class='"+draw.class+"' id='table_"+row+"-"+col+"'></li>";
+				gameBoard += "<li class='"+draw.class+"' id='table_"+row+"-"+col+"'>"+draw.content+"</li>";
 			}
 			gameBoard += "</ul>";
 		}
-		
 		return gameBoard;
 	}
 });

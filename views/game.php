@@ -83,22 +83,7 @@
 			<img id="other_img" src="<?= $config->imgRoot ?>head/head_0.jpg">
 			<label id="other_nickname">--等待對手加入--</label>
 		</div>
-		<div class="gameController">
-			<ul>
-				<li id="table_1-1"></li>
-				<li id="table_1-2"></li>
-				<li id="table_1-3"></li>
-			</ul>
-			<ul>
-				<li id="table_2-1"></li>
-				<li id="table_2-2"></li>
-				<li id="table_2-3"></li>
-			</ul>
-			<ul>
-				<li id="table_3-1"></li>
-				<li id="table_3-2"></li>
-				<li id="table_3-3"></li>
-			</ul>
+		<div class="gameBoard">
 		</div>
 		<div class="chatBox">
 			<div id="chatMessage"></div>
