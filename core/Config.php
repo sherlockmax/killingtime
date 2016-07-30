@@ -16,7 +16,7 @@ class Config {
         $this->projectName = 'KillingTime 殺時間';
         
         /* 專案目錄結構設定 */
-        $this->root = '/killingtime/';
+        $this->root = '/';
         $this->imgRoot = $this->root . 'views/images/';
         $this->cssRoot = $this->root . 'views/css/';
         $this->jsRoot = $this->root . 'views/js/';
@@ -29,7 +29,7 @@ class Config {
         $this->db['dbname']     = 'killingtime';
         
         
-        /* 不需要經過 是否登入狀態 的 action */
+        /* 不需要經過 是否登入狀態 的 request */
         $this->whiteList = array(  "home",
                                     "player/isAccountExsist", 
                                     "player/isNicknameExsist",

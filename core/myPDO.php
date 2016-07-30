@@ -6,11 +6,9 @@ class myPDO{
      
      function __construct() {
           $config = new Config();
-          $pdo = new PDO("mysql:host=".$config->db['host'].":".$config->db['port'].";dbname=".$config->db['dbname'], $config->db['username'], $config->db['password']);
-          $pdo->exec("SET CHARACTER SET utf8");
-          self::$connection = $pdo;
-          $config = null;
-          $pdo = null;
+          $dns = sprintf("mysql:host=%s:%s;dbname=%s", $config->db['host'], $config->db['port'], $config->db['dbname']);
+          self::$connection = new PDO($dns, $config->db['username'], $config->db['password']);
+          self::$connection->exec("SET CHARACTER SET utf8");
      }
      
      function getConnection(){

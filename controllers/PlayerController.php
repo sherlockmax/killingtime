@@ -38,7 +38,6 @@ class PlayerController extends Controller {
         if(empty($data)){
             $pageData['errMsg'] = '登入失敗，請確認帳號或密碼是否正確。';
         }else{
-            
             $_SESSION['isLogin'] = true;
             $_SESSION['player'] = $data;
             $player->setLoginState($data['account']);
@@ -173,6 +172,7 @@ class PlayerController extends Controller {
     
     
     function uploadPhoto(){
+        $message = '照片上傳失敗。';
 		try{
 			$url = '.'.$this->config()->imgRoot . 'head/'. $_SESSION['player']['account'].'.jpg';
 			if(file_exists($url)){
@@ -186,13 +186,13 @@ class PlayerController extends Controller {
 			imagejpeg($source, $url, 100);
 			
 			if(file_exists($url)){
-				echo '照片上傳成功。';
-			}else{
-			    echo '照片上傳失敗。';
+			    $message = '照片上傳成功。';
 			}
 		}catch( Exception $e ){
-			echo '照片上傳失敗。';
+			
 		}
+		
+		$this->view("ajaxMessage", $message);
     }
 }
 ?>

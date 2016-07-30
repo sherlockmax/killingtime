@@ -6,21 +6,18 @@ class friend{
      public $player;
      public $status;
      public $datetime;
-     
-     function __construct(){   }
-     
+
      function getFriendList($loginAccount){
           $PDO = new myPDO();
           $conn = $PDO->getConnection();
-          $sql = "  SELECT p.account, p.nickname, p.isOnline FROM (
-                         SELECT player as friendAccount FROM friend WHERE invite = ? and status = 'F'
-                         union
-                         SELECT invite as friendAccount FROM friend WHERE player = ? and status = 'F'
-                    ) as f LEFT JOIN player as p ON f.friendAccount = p.account
-                    WHERE p.account IS NOT NULL";
+          $sql = "  SELECT `p`.`account`, `p`.`nickname`, `p`.`isOnline` FROM (
+                         SELECT `player` as `friendAccount` FROM `friend` WHERE `invite` = :loginAccount AND `status` = 'F'
+                         UNION
+                         SELECT `invite` as `friendAccount` FROM `friend` WHERE `player` = :loginAccount AND `status` = 'F'
+                    ) AS `f` LEFT JOIN `player` AS p ON `f`.`friendAccount` = `p`.`account`
+                    WHERE `p`.`account` IS NOT NULL";
           $stmt = $conn->prepare($sql);
-          $stmt->bindValue(1, $loginAccount, PDO::PARAM_STR);
-          $stmt->bindValue(2, $loginAccount, PDO::PARAM_STR);
+          $stmt->bindValue(':loginAccount', $loginAccount, PDO::PARAM_STR);
           
           $stmt->execute();
           $data = $stmt->fetchAll();
@@ -32,12 +29,11 @@ class friend{
      function getFriendStatus($inviteAccount, $playerAccount){
           $PDO = new myPDO();
           $conn = $PDO->getConnection();
-          $sql = "SELECT * FROM friend WHERE ( ( invite = ? AND player = ?) OR (invite = ? AND player = ? ) )";
+          $sql = "SELECT * FROM `friend` WHERE ( ( `invite` = :inviteAccount AND `player` = :playerAccount) OR (`invite` = :playerAccount AND `player` = :inviteAccount ) )";
           $stmt = $conn->prepare($sql);
-          $stmt->bindValue(1, $inviteAccount, PDO::PARAM_STR);
-          $stmt->bindValue(2, $playerAccount, PDO::PARAM_STR);
-          $stmt->bindValue(3, $playerAccount, PDO::PARAM_STR);
-          $stmt->bindValue(4, $inviteAccount, PDO::PARAM_STR);
+          $stmt->bindValue(':inviteAccount', $inviteAccount, PDO::PARAM_STR);
+          $stmt->bindValue(':playerAccount', $playerAccount, PDO::PARAM_STR);
+
           
           $stmt->execute();
           $data = $stmt->fetch();
@@ -49,9 +45,9 @@ class friend{
      function getFriendInvite($inviteAccount){
           $PDO = new myPDO();
           $conn = $PDO->getConnection();
-          $sql = "SELECT * FROM friend f LEFT JOIN player p ON f.player = p.account WHERE invite = ? AND status = 'W'";
+          $sql = "SELECT * FROM `friend` AS `f` LEFT JOIN `player` AS `p` ON `f`.`player` = `p`.`account` WHERE `invite` = :inviteAccount AND `status` = 'W'";
           $stmt = $conn->prepare($sql);
-          $stmt->bindValue(1, $inviteAccount, PDO::PARAM_STR);
+          $stmt->bindValue(':inviteAccount', $inviteAccount, PDO::PARAM_STR);
 
           $stmt->execute();
           $data = $stmt->fetchAll();
@@ -63,9 +59,9 @@ class friend{
      function getWhoInviteMe($playerAccount){
           $PDO = new myPDO();
           $conn = $PDO->getConnection();
-          $sql = "SELECT * FROM friend f LEFT JOIN player p ON f.invite = p.account WHERE player = ? AND status = 'W'";
+          $sql = "SELECT * FROM `friend` AS `f` LEFT JOIN `player` AS `p` ON `f`.`invite` = `p`.`account` WHERE `player` = :playerAccount AND `status` = 'W'";
           $stmt = $conn->prepare($sql);
-          $stmt->bindValue(1, $playerAccount, PDO::PARAM_STR);
+          $stmt->bindValue(':playerAccount', $playerAccount, PDO::PARAM_STR);
 
           $stmt->execute();
           $data = $stmt->fetchAll();
@@ -77,12 +73,11 @@ class friend{
      function addFriend($inviteAccount, $playerAccount, $updatetime){
           $PDO = new myPDO();
           $conn = $PDO->getConnection();
-          $sql = "INSERT INTO friend (invite, player, status, updatetime) VALUES (?, ?, ?, ?)";
+          $sql = "INSERT INTO `friend` (`invite`, `player`, `status`, `updatetime`) VALUES (:invite, :player, 'W', :updatetime)";
           $stmt = $conn->prepare($sql);
-          $stmt->bindValue(1, $inviteAccount, PDO::PARAM_STR);
-          $stmt->bindValue(2, $playerAccount, PDO::PARAM_STR);
-          $stmt->bindValue(3, 'W', PDO::PARAM_STR);
-          $stmt->bindValue(4, $updatetime);
+          $stmt->bindValue(':invite', $inviteAccount, PDO::PARAM_STR);
+          $stmt->bindValue(':player', $playerAccount, PDO::PARAM_STR);
+          $stmt->bindValue(':updatetime', $updatetime);
 
           $result = $stmt->execute();
           $PDO->closeConnection();
@@ -93,11 +88,11 @@ class friend{
      function acceptInvite($inviteAccount, $playerAccount, $updatetime){
           $PDO = new myPDO();
           $conn = $PDO->getConnection();
-          $sql = "UPDATE friend SET status = 'F', updatetime = ? WHERE invite = ? AND player = ? ";
+          $sql = "UPDATE `friend` SET `status` = 'F', `updatetime` = :updatetime WHERE `invite` = :invite AND `player` = :player ";
           $stmt = $conn->prepare($sql);
-          $stmt->bindValue(1, $updatetime);
-          $stmt->bindValue(2, $inviteAccount, PDO::PARAM_STR);
-          $stmt->bindValue(3, $playerAccount, PDO::PARAM_STR);
+          $stmt->bindValue(':updatetime', $updatetime);
+          $stmt->bindValue(':invite', $inviteAccount, PDO::PARAM_STR);
+          $stmt->bindValue(':player', $playerAccount, PDO::PARAM_STR);
           
           $result = $stmt->execute();
           $PDO->closeConnection();
@@ -108,12 +103,10 @@ class friend{
      function deleteFriend($inviteAccount, $playerAccount){
           $PDO = new myPDO();
           $conn = $PDO->getConnection();
-          $sql = "DELETE FROM friend WHERE (invite = ? AND player = ?) OR (invite = ? AND player = ?)";
+          $sql = "DELETE FROM `friend` WHERE (`invite` = :invite AND `player` = :player ) OR (`invite` = :player AND `player` = :invite)";
           $stmt = $conn->prepare($sql);
-          $stmt->bindValue(1, $inviteAccount);
-          $stmt->bindValue(2, $playerAccount, PDO::PARAM_STR);
-          $stmt->bindValue(3, $playerAccount, PDO::PARAM_STR);
-          $stmt->bindValue(4, $inviteAccount, PDO::PARAM_STR);
+          $stmt->bindValue(':invite', $inviteAccount);
+          $stmt->bindValue(':player', $playerAccount, PDO::PARAM_STR);
           
           $result = $stmt->execute();
           $PDO->closeConnection();
