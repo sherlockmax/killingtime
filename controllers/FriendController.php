@@ -48,7 +48,7 @@ class FriendController extends Controller {
                 $result .= ",". $value['nickname'];
             }  
         }
-        echo substr( $result, 1);
+        $this->view("ajaxMessage", substr( $result, 1));
     }
     
     function findPlayer(){
