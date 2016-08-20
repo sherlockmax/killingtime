@@ -35,7 +35,7 @@ $(document).ready(function(){
 	$('#noConnection').show();
 	$('#playRoom').dialog({ autoOpen: false});
 	
-	var conn = new WebSocket('ws://localhost:8080');
+	var conn = new WebSocket('ws://killingtime.sherlockmax.tk:8080');
 	conn.onopen = function(e) {
 		alertMsg("提示訊息", "遊戲伺服器連接成功！");
 		$('#noConnection').hide();
@@ -334,7 +334,7 @@ $(document).ready(function(){
 		}
 	});
 	
-	$('div #playRoom .gameBoard ul li').click(function(){
+	$('.gameBoard').on('click', "li", function(){
 		if($(this).text() == "" && $('#other_nickname').text() != "--等待對手加入--"){
 			if($('#whosturn').text() == "該你/妳囉"){
 				$('#whosturn').text("該對手囉");
