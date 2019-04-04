@@ -3,17 +3,15 @@
 class App{
     public function __construct() {
         $config = new Config();
-        
+
 		if(!isset($_GET['url'])){
 			header("Location: ".$config->root."home");
 			exit;
-		}
+        }
         
         $url = $this->parseUrl();
-        
         $url[0] = ucfirst($url[0]);
-        
-        $controllerName =  "{$url[0]}Controller";
+        $controllerName = "{$url[0]}Controller";
 
         if(!in_array($_GET["url"], $config->whiteList)){
             if (session_status() == PHP_SESSION_NONE) {
@@ -40,6 +38,7 @@ class App{
     public function parseUrl() {
         if (isset($_GET["url"])) {
             $url = rtrim($_GET["url"], "/");
+            $url = ltrim($url, "/");
             $url = explode("/", $url);
             return $url;
         }
