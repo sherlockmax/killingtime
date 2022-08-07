@@ -35,7 +35,7 @@ $(document).ready(function(){
 	$('#noConnection').show();
 	$('#playRoom').dialog({ autoOpen: false});
 	
-	var conn = new WebSocket('ws://killingtime.max/ws');
+	var conn = new WebSocket('wss://'+location.hostname+'/ws');
 	conn.onopen = function(e) {
 		alertMsg("提示訊息", "遊戲伺服器連接成功！");
 		$('#noConnection').hide();
